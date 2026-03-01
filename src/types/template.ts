@@ -14,16 +14,26 @@ export interface TemplateFields {
   backgroundColor: string; // Hex
   gradientPreset: string; // Preset ID from gradients.ts
   backgroundImageUrl: string | null;
+
+  // Customization (for custom template)
+  layout: "centered" | "left" | "right";
+  textAlign: "left" | "center" | "right";
+  titleSize: "sm" | "md" | "lg" | "xl";
+  subtitleSize: "sm" | "md" | "lg";
+  padding: "sm" | "md" | "lg" | "xl";
+  showLogo: boolean;
+  screenshotUrl: string | null;
 }
 
 // === Per-field rendering config ===
 export interface FieldConfig {
   key: keyof TemplateFields;
   label: string;
-  type: "text" | "textarea" | "color" | "file";
+  type: "text" | "textarea" | "color" | "file" | "select" | "toggle";
   placeholder?: string;
   required?: boolean;
-  group: "content" | "branding";
+  group: "content" | "branding" | "customization";
+  options?: { value: string; label: string }[]; // For select type
 }
 
 // === Template metadata ===
@@ -52,5 +62,7 @@ export interface EditorState {
 
 export type EditorAction =
   | { type: "SELECT_TEMPLATE"; templateId: string }
-  | { type: "UPDATE_FIELD"; key: keyof TemplateFields; value: string | null }
-  | { type: "SET_EXPORTING"; value: boolean };
+  | { type: "UPDATE_FIELD"; key: keyof TemplateFields; value: string | null | boolean }
+  | { type: "SET_EXPORTING"; value: boolean }
+  | { type: "RESET_STYLE" }
+  | { type: "CLEAR_CONTENT" };

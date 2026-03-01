@@ -42,7 +42,8 @@ function MonoTemplate({ fields }: TemplateProps) {
           position: "absolute",
           width: 500,
           height: 500,
-          backgroundColor: "rgba(255,255,255,0.08)",
+          background: "radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%)",
+          backgroundColor: "transparent",
           borderRadius: "50%",
           right: -120,
           bottom: -120,
@@ -56,13 +57,32 @@ function MonoTemplate({ fields }: TemplateProps) {
           position: "absolute",
           width: 200,
           height: 200,
-          backgroundColor: "rgba(255,255,255,0.06)",
+          background: "radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%)",
+          backgroundColor: "transparent",
           borderRadius: "50%",
           right: 100,
           top: -60,
           zIndex: 0,
         }}
       />
+
+      {/* Decorative Quote Mark */}
+      <div
+        style={{
+          position: "absolute",
+          bottom: -80,
+          right: 20,
+          fontSize: 800,
+          fontWeight: 900,
+          color: "#ffffff",
+          opacity: 0.05,
+          lineHeight: 1,
+          fontFamily: "serif",
+          zIndex: 0,
+        }}
+      >
+        "
+      </div>
 
       {/* Content */}
       <div
@@ -75,6 +95,7 @@ function MonoTemplate({ fields }: TemplateProps) {
           padding: 64,
           position: "relative",
           zIndex: 1,
+          boxShadow: "inset 0 0 200px rgba(0,0,0,0.3)",
         }}
       >
         {fields.logoUrl && (
@@ -97,9 +118,9 @@ function MonoTemplate({ fields }: TemplateProps) {
                 fontSize: 76,
                 fontWeight: 800,
                 color: "#ffffff",
-                textTransform: "uppercase",
                 lineHeight: 1.0,
-                letterSpacing: "-0.02em",
+                letterSpacing: "-0.03em",
+                textShadow: "0 4px 16px rgba(0,0,0,0.15)",
                 overflow: "hidden",
                 display: "-webkit-box",
                 WebkitLineClamp: 2,

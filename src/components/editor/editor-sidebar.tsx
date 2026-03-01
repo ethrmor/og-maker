@@ -1,17 +1,29 @@
 import type { TemplateFields } from "@/types/template";
 import { EDITOR_FIELDS } from "@/lib/templates";
-import { GRADIENT_PRESETS } from "@/lib/gradients";
-import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
+import { TemplateSelector } from "@/components/editor/template-selector";
+import { SidebarSection, FieldRenderer } from "@/components/editor/sidebar";
+import { GradientPresetPicker } from "@/components/editor/sidebar/gradient-preset-picker";
+import { FileUpload } from "@/components/ui/file-upload";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { ColorPicker } from "@/components/ui/color-picker";
-import { TemplatePicker } from "@/components/editor/template-picker";
+import { Button } from "@/components/ui/button";
+import { RotateCcw, Trash2 } from "lucide-react";
 
 interface EditorSidebarProps {
   fields: TemplateFields;
   selectedTemplateId: string;
   onSelectTemplate: (id: string) => void;
-  onUpdateField: (key: keyof TemplateFields, value: string | null) => void;
+  onUpdateField: (key: keyof TemplateFields, value: string | null | boolean) => void;
+  onResetStyle?: () => void;
+  onClearContent?: () => void;
 }
 
 function EditorSidebar({
@@ -19,161 +31,85 @@ function EditorSidebar({
   selectedTemplateId,
   onSelectTemplate,
   onUpdateField,
+  onResetStyle,
+  onClearContent,
 }: EditorSidebarProps) {
   const contentFields = EDITOR_FIELDS.filter((f) => f.group === "content");
   const brandingFields = EDITOR_FIELDS.filter((f) => f.group === "branding");
+  const customizationFields = EDITOR_FIELDS.filter((f) => f.group === "customization");
+  const isCustomTemplate = selectedTemplateId === "custom";
 
   return (
-    <div className="flex h-full flex-col overflow-y-auto border-r border-border bg-surface">
-      <div className="flex flex-col gap-8 p-5">
-        {/* Template picker */}
-        <TemplatePicker
-          selectedId={selectedTemplateId}
-          onSelect={onSelectTemplate}
-        />
+    <div className="flex h-full flex-col min-h-0 border-r border-border bg-surface">
+      {/* Header - Template Selector + Actions */}
+      <div className="shrink-0 border-b border-border/60 px-5 py-4 space-y-3">
+        <div className="space-y-1.5">
+          <Label className="text-xs text-muted-foreground uppercase tracking-wider">
+            Template
+          </Label>
+          <TemplateSelector
+            selectedId={selectedTemplateId}
+            onSelect={onSelectTemplate}
+          />
+        </div>
 
-        {/* Divider */}
-        <div className="h-px bg-border/60" />
+        {/* Quick Actions */}
+        <div className="flex gap-2">
+          <Button
+            variant="ghost"
+            size="xs"
+            onClick={onResetStyle}
+            className="h-7 px-2 text-xs text-muted-foreground hover:text-foreground"
+          >
+            <RotateCcw className="size-3.5 mr-1" />
+            Reset style
+          </Button>
+          <Button
+            variant="ghost"
+            size="xs"
+            onClick={onClearContent}
+            className="h-7 px-2 text-xs text-muted-foreground hover:text-destructive"
+          >
+            <Trash2 className="size-3.5 mr-1" />
+            Clear
+          </Button>
+        </div>
+      </div>
 
-        {/* Content fields */}
-        <fieldset className="flex flex-col gap-3">
-          <legend className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
-            Content
-          </legend>
+      {/* Scrollable Body */}
+      <div className="flex-1 min-h-0 overflow-y-auto">
+        {/* Content Section */}
+        <SidebarSection title="Content" defaultOpen={true}>
           {contentFields.map((field) => (
-            <div key={field.key} className="flex flex-col gap-1.5">
-              <Label htmlFor={field.key} className="text-xs">
-                {field.label}
-                {field.required && (
-                  <span className="text-destructive ml-0.5">*</span>
-                )}
-              </Label>
-              {field.type === "text" && (
-                <Input
-                  id={field.key}
-                  value={(fields[field.key] as string) ?? ""}
-                  onChange={(e) => onUpdateField(field.key, e.target.value)}
-                  placeholder={field.placeholder}
-                />
-              )}
-              {field.type === "file" && (
-                <div className="flex flex-col gap-2">
-                  {fields.logoUrl && (
-                    <div className="flex items-center gap-2">
-                      <img
-                        src={fields.logoUrl}
-                        alt="Logo preview"
-                        className="h-8 w-auto rounded border border-border object-contain p-0.5"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => onUpdateField("logoUrl", null)}
-                        className="text-xs text-muted-foreground hover:text-destructive"
-                      >
-                        Remove
-                      </button>
-                    </div>
-                  )}
-                  <label className="flex items-center justify-center gap-2 rounded-lg border-2 border-dashed border-border/70 bg-muted/30 px-3 py-2.5 text-xs text-muted-foreground cursor-pointer transition-colors hover:border-primary/40 hover:bg-primary/5 hover:text-foreground">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                    Upload image
-                    <Input
-                      id={field.key}
-                      type="file"
-                      accept="image/*"
-                      className="sr-only"
-                      onChange={(e) => {
-                        const file = e.target.files?.[0];
-                        if (file) {
-                          const url = URL.createObjectURL(file);
-                          onUpdateField("logoUrl", url);
-                        }
-                      }}
-                    />
-                  </label>
-                </div>
-              )}
-              {field.type === "color" && (
-                <ColorPicker
-                  value={(fields[field.key] as string) ?? "#000000"}
-                  onChange={(color) => onUpdateField(field.key, color)}
-                />
-              )}
-            </div>
+            <FieldRenderer
+              key={field.key}
+              field={field}
+              value={fields[field.key]}
+              onChange={(val) => onUpdateField(field.key, val)}
+            />
           ))}
-        </fieldset>
+        </SidebarSection>
 
-        {/* Divider */}
-        <div className="h-px bg-border/60" />
+        <Separator className="my-1" />
 
-        {/* Branding fields (non-content, non-file) */}
-        <fieldset className="flex flex-col gap-3">
-          <legend className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
-            Branding
-          </legend>
+        {/* Branding Section */}
+        <SidebarSection title="Branding" defaultOpen={true}>
           {brandingFields.map((field) => (
-            <div key={field.key} className="flex flex-col gap-1.5">
-              <Label htmlFor={field.key} className="text-xs">
-                {field.label}
-              </Label>
-              {field.type === "file" && (
-                <div className="flex flex-col gap-2">
-                  {fields.logoUrl && (
-                    <div className="flex items-center gap-2">
-                      <img
-                        src={fields.logoUrl}
-                        alt="Logo preview"
-                        className="h-8 w-auto rounded border border-border object-contain p-0.5"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => onUpdateField("logoUrl", null)}
-                        className="text-xs text-muted-foreground hover:text-destructive"
-                      >
-                        Remove
-                      </button>
-                    </div>
-                  )}
-                  <label className="flex items-center justify-center gap-2 rounded-lg border-2 border-dashed border-border/70 bg-muted/30 px-3 py-2.5 text-xs text-muted-foreground cursor-pointer transition-colors hover:border-primary/40 hover:bg-primary/5 hover:text-foreground">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                    Upload image
-                    <Input
-                      id={field.key}
-                      type="file"
-                      accept="image/*"
-                      className="sr-only"
-                      onChange={(e) => {
-                        const file = e.target.files?.[0];
-                        if (file) {
-                          const url = URL.createObjectURL(file);
-                          onUpdateField("logoUrl", url);
-                        }
-                      }}
-                    />
-                  </label>
-                </div>
-              )}
-              {field.type === "color" && (
-                <ColorPicker
-                  value={(fields[field.key] as string) ?? "#000000"}
-                  onChange={(color) => onUpdateField(field.key, color)}
-                />
-              )}
-            </div>
+            <FieldRenderer
+              key={field.key}
+              field={field}
+              value={fields[field.key]}
+              onChange={(val) => onUpdateField(field.key, val)}
+            />
           ))}
-        </fieldset>
+        </SidebarSection>
 
-        {/* Divider */}
-        <div className="h-px bg-border/60" />
+        <Separator className="my-1" />
 
-        {/* Background section */}
-        <fieldset className="flex flex-col gap-3">
-          <legend className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
-            Background
-          </legend>
-
-          {/* Background type */}
-          <div className="flex flex-col gap-1.5">
+        {/* Background Section */}
+        <SidebarSection title="Background" defaultOpen={true}>
+          {/* Background Type */}
+          <div className="space-y-1.5">
             <Label className="text-xs">Type</Label>
             <Select
               value={fields.backgroundType}
@@ -190,9 +126,9 @@ function EditorSidebar({
             </Select>
           </div>
 
-          {/* Conditional fields based on background type */}
+          {/* Conditional Fields */}
           {fields.backgroundType === "solid" && (
-            <div className="flex flex-col gap-1.5">
+            <div className="space-y-1.5">
               <Label className="text-xs">Color</Label>
               <ColorPicker
                 value={fields.backgroundColor}
@@ -202,67 +138,54 @@ function EditorSidebar({
           )}
 
           {fields.backgroundType === "gradient" && (
-            <div className="flex flex-col gap-1.5">
+            <div className="space-y-1.5">
               <Label className="text-xs">Preset</Label>
-              <div className="grid grid-cols-4 gap-1.5">
-                {GRADIENT_PRESETS.map((preset) => (
-                  <button
-                    key={preset.id}
-                    type="button"
-                    onClick={() => onUpdateField("gradientPreset", preset.id)}
-                    className={`aspect-square rounded-md border-2 transition-all ${
-                      fields.gradientPreset === preset.id
-                        ? "border-primary ring-2 ring-primary/20"
-                        : "border-transparent hover:border-border"
-                    }`}
-                    style={{ background: preset.css }}
-                    title={preset.name}
-                  />
-                ))}
-              </div>
+              <GradientPresetPicker
+                value={fields.gradientPreset}
+                onChange={(preset) => onUpdateField("gradientPreset", preset)}
+              />
             </div>
           )}
 
           {fields.backgroundType === "image" && (
-            <div className="flex flex-col gap-2">
-              {fields.backgroundImageUrl && (
-                <div className="flex items-center gap-2">
-                  <img
-                    src={fields.backgroundImageUrl}
-                    alt="Background preview"
-                    className="h-12 w-auto rounded border border-border object-cover"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => onUpdateField("backgroundImageUrl", null)}
-                    className="text-xs text-muted-foreground hover:text-destructive"
-                  >
-                    Remove
-                  </button>
-                </div>
-              )}
-              <label className="flex items-center justify-center gap-2 rounded-lg border-2 border-dashed border-border/70 bg-muted/30 px-3 py-2.5 text-xs text-muted-foreground cursor-pointer transition-colors hover:border-primary/40 hover:bg-primary/5 hover:text-foreground">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                Upload image
-                <Input
-                  type="file"
-                  accept="image/*"
-                  className="sr-only"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (file) {
-                      const url = URL.createObjectURL(file);
-                      onUpdateField("backgroundImageUrl", url);
-                    }
-                  }}
-                />
-              </label>
-            </div>
+            <FileUpload
+              value={fields.backgroundImageUrl}
+              onChange={(url) => onUpdateField("backgroundImageUrl", url)}
+              accept="image/*"
+              label="Upload background"
+              fit="cover"
+              maxPreviewHeight={48}
+            />
           )}
-        </fieldset>
+        </SidebarSection>
+
+        {/* Customization Section - Only for Custom Template */}
+        {isCustomTemplate && customizationFields.length > 0 && (
+          <>
+            <Separator className="my-1" />
+            <SidebarSection title="Layout & Style" defaultOpen={true}>
+              {customizationFields.map((field) => (
+                <FieldRenderer
+                  key={field.key}
+                  field={field}
+                  value={fields[field.key]}
+                  onChange={(val) => onUpdateField(field.key, val)}
+                />
+              ))}
+            </SidebarSection>
+          </>
+        )}
+      </div>
+
+      {/* Footer - Tips */}
+      <div className="shrink-0 border-t border-border/60 px-5 py-3 bg-muted/20">
+        <p className="text-[11px] text-muted-foreground leading-relaxed">
+          Changes are previewed instantly. Use the buttons below the canvas to export your OG image.
+        </p>
       </div>
     </div>
   );
 }
 
 export { EditorSidebar };
+export type { EditorSidebarProps };

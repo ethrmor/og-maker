@@ -36,6 +36,76 @@ export const EDITOR_FIELDS: FieldConfig[] = [
     type: "color",
     group: "branding",
   },
+  // Customization fields (shown for custom template)
+  {
+    key: "layout",
+    label: "Layout",
+    type: "select",
+    group: "customization",
+    options: [
+      { value: "centered", label: "Centered" },
+      { value: "left", label: "Left Aligned" },
+      { value: "right", label: "Right Aligned" },
+    ],
+  },
+  {
+    key: "textAlign",
+    label: "Text Alignment",
+    type: "select",
+    group: "customization",
+    options: [
+      { value: "left", label: "Left" },
+      { value: "center", label: "Center" },
+      { value: "right", label: "Right" },
+    ],
+  },
+  {
+    key: "titleSize",
+    label: "Title Size",
+    type: "select",
+    group: "customization",
+    options: [
+      { value: "sm", label: "Small" },
+      { value: "md", label: "Medium" },
+      { value: "lg", label: "Large" },
+      { value: "xl", label: "Extra Large" },
+    ],
+  },
+  {
+    key: "subtitleSize",
+    label: "Subtitle Size",
+    type: "select",
+    group: "customization",
+    options: [
+      { value: "sm", label: "Small" },
+      { value: "md", label: "Medium" },
+      { value: "lg", label: "Large" },
+    ],
+  },
+  {
+    key: "padding",
+    label: "Padding",
+    type: "select",
+    group: "customization",
+    options: [
+      { value: "sm", label: "Small" },
+      { value: "md", label: "Medium" },
+      { value: "lg", label: "Large" },
+      { value: "xl", label: "Extra Large" },
+    ],
+  },
+  {
+    key: "showLogo",
+    label: "Show Logo",
+    type: "toggle",
+    group: "customization",
+  },
+  {
+    key: "screenshotUrl",
+    label: "Screenshot",
+    type: "file",
+    group: "customization",
+  },
 ];
 
 // Template registry
@@ -184,6 +254,18 @@ export const TEMPLATES: TemplateMeta[] = [
       gradientPreset: "sunset",
     },
   },
+  {
+    id: "custom",
+    name: "Custom",
+    description: "Full control over layout, spacing, and typography",
+    thumbnailGradient: "linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%)",
+    defaults: {
+      accentColor: "#6366f1",
+      backgroundType: "solid",
+      backgroundColor: "#ffffff",
+      gradientPreset: "sunset",
+    },
+  },
 ];
 
 export function getTemplate(id: string): TemplateMeta {
@@ -200,4 +282,12 @@ export const DEFAULT_FIELDS: TemplateFields = {
   backgroundColor: "#ffffff",
   gradientPreset: "sunset",
   backgroundImageUrl: null,
+  // Customization defaults
+  layout: "centered",
+  textAlign: "center",
+  titleSize: "lg",
+  subtitleSize: "md",
+  padding: "lg",
+  showLogo: true,
+  screenshotUrl: null,
 };

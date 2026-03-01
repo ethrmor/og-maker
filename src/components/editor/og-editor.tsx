@@ -7,7 +7,7 @@ import { TEMPLATE_COMPONENTS } from "@/components/templates";
 import { ThemeToggle } from "@/components/editor/theme-toggle";
 
 function OgEditor() {
-  const { state, selectTemplate, updateField, setExporting } = useOgEditor();
+  const { state, selectTemplate, updateField, setExporting, resetStyle, clearContent } = useOgEditor();
 
   const TemplateComponent: ComponentType<TemplateProps> =
     TEMPLATE_COMPONENTS[state.selectedTemplateId] ??
@@ -50,6 +50,8 @@ function OgEditor() {
           selectedTemplateId={state.selectedTemplateId}
           onSelectTemplate={selectTemplate}
           onUpdateField={updateField}
+          onResetStyle={resetStyle}
+          onClearContent={clearContent}
         />
         <PreviewCanvas
           fields={state.fields}

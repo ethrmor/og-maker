@@ -8,6 +8,13 @@ import { getTemplate, DEFAULT_FIELDS } from "@/lib/templates";
 
 const INITIAL_TEMPLATE_ID = "minimal";
 
+const CONTENT_KEYS: (keyof TemplateFields)[] = [
+  "title",
+  "subtitle",
+  "brandName",
+  "logoUrl",
+];
+
 function getInitialState(): EditorState {
   const template = getTemplate(INITIAL_TEMPLATE_ID);
   return {
@@ -19,14 +26,6 @@ function getInitialState(): EditorState {
     isExporting: false,
   };
 }
-
-// Content fields preserved when switching templates
-const CONTENT_KEYS: (keyof TemplateFields)[] = [
-  "title",
-  "subtitle",
-  "brandName",
-  "logoUrl",
-];
 
 function editorReducer(state: EditorState, action: EditorAction): EditorState {
   switch (action.type) {
@@ -62,6 +61,35 @@ function editorReducer(state: EditorState, action: EditorAction): EditorState {
         isExporting: action.value,
       };
     }
+    case "RESET_STYLE": {
+      const template = getTemplate(state.selectedTemplateId);
+      // Preserve content, reset only style fields to template defaults
+      const preservedContent: Partial<TemplateFields> = {};
+      for (const key of CONTENT_KEYS) {
+        preservedContent[key] = state.fields[key] as never;
+      }
+      return {
+        ...state,
+        fields: {
+          ...DEFAULT_FIELDS,
+          ...template.defaults,
+          ...preservedContent,
+        },
+      };
+    }
+    case "CLEAR_CONTENT": {
+      // Clear content fields, keep style as-is
+      return {
+        ...state,
+        fields: {
+          ...state.fields,
+          title: "",
+          subtitle: "",
+          brandName: "",
+          logoUrl: null,
+        },
+      };
+    }
     default:
       return state;
   }
@@ -73,16 +101,24 @@ export function useOgEditor() {
   const selectTemplate = (templateId: string) =>
     dispatch({ type: "SELECT_TEMPLATE", templateId });
 
-  const updateField = (key: keyof TemplateFields, value: string | null) =>
+  const updateField = (key: keyof TemplateFields, value: string | null | boolean) =>
     dispatch({ type: "UPDATE_FIELD", key, value });
 
   const setExporting = (value: boolean) =>
     dispatch({ type: "SET_EXPORTING", value });
+
+  const resetStyle = () =>
+    dispatch({ type: "RESET_STYLE" });
+
+  const clearContent = () =>
+    dispatch({ type: "CLEAR_CONTENT" });
 
   return {
     state,
     selectTemplate,
     updateField,
     setExporting,
+    resetStyle,
+    clearContent,
   };
 }

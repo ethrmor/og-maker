@@ -13,19 +13,6 @@ function BoldTemplate({ fields }: TemplateProps) {
           zIndex: 0,
         }}
       />
-      {/* Angled accent slash */}
-      <div
-        style={{
-          position: "absolute",
-          width: "150%",
-          height: 2,
-          backgroundColor: fields.accentColor,
-          transform: "rotate(-15deg)",
-          top: "40%",
-          left: "-25%",
-          opacity: 0.4,
-        }}
-      />
       {/* Noise overlay */}
       <div
         style={{
@@ -113,7 +100,6 @@ function BoldTemplate({ fields }: TemplateProps) {
               display: "-webkit-box",
               WebkitLineClamp: 2,
               WebkitBoxOrient: "vertical",
-              textShadow: "0 8px 32px rgba(0,0,0,0.4)",
             }}
           >
             {fields.title}

@@ -52,31 +52,40 @@ function PreviewCanvas({
       {/* Preview area */}
       <div
         ref={containerRef}
-        className="flex flex-1 items-center justify-center overflow-hidden"
+        className="flex flex-1 items-center justify-center overflow-hidden min-h-0 min-w-0"
         style={{
           backgroundImage:
             "radial-gradient(circle, color-mix(in oklch, var(--color-border) 40%, transparent) 0.75px, transparent 0.75px)",
           backgroundSize: "16px 16px",
         }}
       >
+        {/* Layout wrapper with scaled dimensions */}
         <div
           style={{
-            transform: `scale(${scale})`,
-            transformOrigin: "center center",
-            width: 1200,
-            height: 630,
+            width: 1200 * scale,
+            height: 630 * scale,
             flexShrink: 0,
           }}
         >
+          {/* Scaled content wrapper */}
           <div
-            ref={canvasRef}
-            style={{ width: 1200, height: 630 }}
-            className="shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),0_10px_25px_-5px_rgba(0,0,0,0.08),0_25px_50px_-12px_rgba(0,0,0,0.15)]"
+            style={{
+              transform: `scale(${scale})`,
+              transformOrigin: "top left",
+              width: 1200,
+              height: 630,
+            }}
           >
-            <TemplateComponent fields={fields} />
-          </div>
+            <div
+              ref={canvasRef}
+              style={{ width: 1200, height: 630 }}
+              className="shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),0_10px_25px_-5px_rgba(0,0,0,0.08),0_25px_50px_-12px_rgba(0,0,0,0.15)]"
+            >
+              <TemplateComponent fields={fields} />
+            </div>
         </div>
       </div>
+    </div>
 
       {/* Export actions */}
       <div className="flex items-center justify-center gap-3 border-t border-border/50 shadow-[0_-1px_3px_-1px_rgba(0,0,0,0.06)] dark:shadow-[0_-1px_3px_-1px_rgba(0,0,0,0.3)] bg-background px-6 py-5">

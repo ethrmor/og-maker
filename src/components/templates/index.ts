@@ -12,6 +12,7 @@ import { EditorialTemplate } from "./editorial";
 import { AuroraTemplate } from "./aurora";
 import { SpotlightTemplate } from "./spotlight";
 import { TypographicTemplate } from "./typographic";
+import { CustomTemplate } from "./custom";
 
 export const TEMPLATE_COMPONENTS: Record<string, ComponentType<TemplateProps>> = {
   minimal: MinimalTemplate,
@@ -26,4 +27,5 @@ export const TEMPLATE_COMPONENTS: Record<string, ComponentType<TemplateProps>> =
   aurora: AuroraTemplate,
   spotlight: SpotlightTemplate,
   typographic: TypographicTemplate,
+  custom: CustomTemplate,
 };
