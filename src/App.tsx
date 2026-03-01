@@ -1,9 +1,7 @@
+import { OgEditor } from "@/components/editor/og-editor";
+
 export function App() {
-  return (
-    <div className="flex items-center justify-center min-h-screen">
-      <div className="font-medium">Hello World</div>
-    </div>
-  )
+  return <OgEditor />;
 }
 
-export default App
+export default App;
