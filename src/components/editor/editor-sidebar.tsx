@@ -178,9 +178,12 @@ function EditorSidebar({
       </div>
 
       {/* Footer - Tips */}
-      <div className="shrink-0 border-t border-border/60 px-5 py-3 bg-muted/20">
+      <div className="shrink-0 border-t border-border/60 px-5 py-5 bg-muted/20 h-[81px] flex flex-col justify-center shadow-[0_-1px_3px_-1px_rgba(0,0,0,0.06)] dark:shadow-[0_-1px_3px_-1px_rgba(0,0,0,0.3)]">
         <p className="text-[11px] text-muted-foreground leading-relaxed">
           Changes are previewed instantly. Use the buttons below the canvas to export your OG image.
+        </p>
+        <p className="text-[10px] text-muted-foreground/60 mt-1">
+          © {new Date().getFullYear()} ethrmor
         </p>
       </div>
     </div>
