@@ -20,7 +20,18 @@ function MonoTemplate({ fields }: TemplateProps) {
           position: "absolute",
           inset: 0,
           background:
-            "linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 50%, rgba(0,0,0,0.12) 100%)",
+            "linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 40%, rgba(0,0,0,0.18) 100%)",
+          zIndex: 0,
+        }}
+      />
+
+      {/* Noise Texture */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          opacity: 0.06,
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
           zIndex: 0,
         }}
       />
@@ -29,21 +40,39 @@ function MonoTemplate({ fields }: TemplateProps) {
       <div
         style={{
           position: "absolute",
-          width: 400,
-          height: 400,
-          backgroundColor: "rgba(255,255,255,0.05)",
+          width: 500,
+          height: 500,
+          backgroundColor: "rgba(255,255,255,0.08)",
           borderRadius: "50%",
-          right: -100,
-          bottom: -100,
+          right: -120,
+          bottom: -120,
+          zIndex: 0,
+        }}
+      />
+
+      {/* Small Circle */}
+      <div
+        style={{
+          position: "absolute",
+          width: 200,
+          height: 200,
+          backgroundColor: "rgba(255,255,255,0.06)",
+          borderRadius: "50%",
+          right: 100,
+          top: -60,
           zIndex: 0,
         }}
       />
 
       {/* Content */}
       <div
-        className="flex flex-col justify-center w-full h-full"
         style={{
-          padding: 80,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          width: "100%",
+          height: "100%",
+          padding: 64,
           position: "relative",
           zIndex: 1,
         }}
@@ -53,53 +82,61 @@ function MonoTemplate({ fields }: TemplateProps) {
             src={fields.logoUrl}
             alt="Logo"
             style={{
-              maxHeight: 40,
+              maxHeight: 44,
               objectFit: "contain",
               alignSelf: "flex-start",
+              filter: "drop-shadow(0 2px 10px rgba(0,0,0,0.2))",
             }}
           />
         )}
 
-        {fields.title && (
-          <div
-            className="line-clamp-2"
-            style={{
-              fontSize: 56,
-              fontWeight: 800,
-              color: "#ffffff",
-              textTransform: "uppercase",
-              lineHeight: 1.05,
-              letterSpacing: "-0.01em",
-              marginTop: 32,
-            }}
-          >
-            {fields.title}
-          </div>
-        )}
+        <div style={{ display: "flex", flexDirection: "column", marginTop: 28 }}>
+          {fields.title && (
+            <div
+              style={{
+                fontSize: 76,
+                fontWeight: 800,
+                color: "#ffffff",
+                textTransform: "uppercase",
+                lineHeight: 1.0,
+                letterSpacing: "-0.02em",
+                overflow: "hidden",
+                display: "-webkit-box",
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: "vertical",
+              }}
+            >
+              {fields.title}
+            </div>
+          )}
 
-        {fields.subtitle && (
-          <div
-            className="line-clamp-2"
-            style={{
-              fontSize: 20,
-              fontWeight: 400,
-              color: "rgba(255,255,255,0.7)",
-              lineHeight: 1.4,
-              marginTop: 16,
-            }}
-          >
-            {fields.subtitle}
-          </div>
-        )}
+          {fields.subtitle && (
+            <div
+              style={{
+                fontSize: 26,
+                fontWeight: 450,
+                color: "rgba(255,255,255,0.8)",
+                lineHeight: 1.4,
+                marginTop: 18,
+                overflow: "hidden",
+                display: "-webkit-box",
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: "vertical",
+              }}
+            >
+              {fields.subtitle}
+            </div>
+          )}
+        </div>
 
         {fields.brandName && (
           <div
             style={{
-              fontSize: 13,
+              fontSize: 14,
               textTransform: "uppercase",
               letterSpacing: "0.25em",
-              fontWeight: 500,
-              color: "rgba(255,255,255,0.5)",
+              fontWeight: 600,
+              color: "rgba(255,255,255,0.65)",
               marginTop: "auto",
             }}
           >

@@ -4,34 +4,33 @@ import { TemplateWrapper } from "@/components/templates/template-wrapper";
 function SplitTemplate({ fields }: TemplateProps) {
   return (
     <TemplateWrapper fields={fields}>
-      <div className="flex w-full h-full relative">
-        {/* Left panel */}
+      <div className="flex w-full h-full">
+        {/* Left panel — content */}
         <div
           className="flex flex-col justify-center"
           style={{
-            width: "58%",
+            width: "55%",
             height: "100%",
-            padding: "80px 40px 80px 80px",
-            backgroundColor: "transparent",
+            padding: "64px 48px 64px 64px",
           }}
         >
           {fields.logoUrl && (
             <img
               src={fields.logoUrl}
               alt="Logo"
-              style={{ maxHeight: 36, width: "auto", alignSelf: "flex-start" }}
+              style={{ maxHeight: 40, width: "auto", alignSelf: "flex-start" }}
             />
           )}
 
           {fields.brandName && (
             <div
               style={{
-                fontSize: 13,
+                fontSize: 15,
+                fontWeight: 600,
+                color: "#374151",
                 textTransform: "uppercase",
                 letterSpacing: "0.15em",
-                fontWeight: 500,
-                color: "#9ca3af",
-                marginTop: fields.logoUrl ? 8 : 0,
+                marginTop: fields.logoUrl ? 10 : 0,
               }}
             >
               {fields.brandName}
@@ -42,10 +41,10 @@ function SplitTemplate({ fields }: TemplateProps) {
             {fields.title && (
               <div
                 style={{
-                  fontSize: 44,
+                  fontSize: 56,
                   fontWeight: 700,
                   color: "#111827",
-                  lineHeight: 1.2,
+                  lineHeight: 1.15,
                   overflow: "hidden",
                   display: "-webkit-box",
                   WebkitLineClamp: 3,
@@ -59,10 +58,10 @@ function SplitTemplate({ fields }: TemplateProps) {
             {fields.subtitle && (
               <div
                 style={{
-                  fontSize: 17,
-                  fontWeight: 400,
-                  color: "#6b7280",
-                  marginTop: 12,
+                  fontSize: 22,
+                  fontWeight: 450,
+                  color: "#4b5563",
+                  marginTop: 14,
                   overflow: "hidden",
                   display: "-webkit-box",
                   WebkitLineClamp: 2,
@@ -75,37 +74,34 @@ function SplitTemplate({ fields }: TemplateProps) {
           </div>
         </div>
 
-        {/* Right panel */}
+        {/* Right panel — accent color, clean */}
         <div
           style={{
-            position: "absolute",
-            right: 0,
-            top: 0,
-            width: "42%",
+            width: "45%",
             height: "100%",
             backgroundColor: fields.accentColor,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
+            position: "relative",
+            overflow: "hidden",
           }}
         >
-          <div
-            style={{
-              width: 300,
-              height: 300,
-              backgroundColor: "rgba(255,255,255,0.08)",
-              borderRadius: "50%",
-              transform: "translateY(30px)",
-            }}
-          />
+          {/* Subtle depth gradient */}
           <div
             style={{
               position: "absolute",
-              left: 16,
-              top: 0,
-              bottom: 0,
-              width: 1,
-              backgroundColor: "rgba(255,255,255,0.2)",
+              inset: 0,
+              background:
+                "linear-gradient(160deg, rgba(255,255,255,0.08) 0%, transparent 50%, rgba(0,0,0,0.08) 100%)",
+            }}
+          />
+          {/* Single thin horizontal line for structure */}
+          <div
+            style={{
+              position: "absolute",
+              left: 40,
+              right: 40,
+              top: "62%",
+              height: 1,
+              backgroundColor: "rgba(255,255,255,0.15)",
             }}
           />
         </div>

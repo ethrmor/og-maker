@@ -4,29 +4,26 @@ import { TemplateWrapper } from "@/components/templates/template-wrapper";
 function FrameTemplate({ fields }: TemplateProps) {
   return (
     <TemplateWrapper fields={fields}>
-      {/* Outer Frame */}
+      {/* Grain/Noise Texture Overlay */}
       <div
         style={{
           position: "absolute",
-          inset: 28,
-          border: "2px solid",
-          borderColor: fields.accentColor,
-          opacity: 0.8,
-          borderRadius: 8,
-          pointerEvents: "none",
+          inset: 0,
+          opacity: 0.05,
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
           zIndex: 0,
         }}
       />
 
-      {/* Inner Frame */}
+      {/* Outer Frame */}
       <div
         style={{
           position: "absolute",
-          inset: 36,
-          border: "1px solid",
+          inset: 24,
+          border: "2.5px solid",
           borderColor: fields.accentColor,
-          opacity: 0.3,
-          borderRadius: 4,
+          opacity: 0.9,
+          borderRadius: 12,
           pointerEvents: "none",
           zIndex: 0,
         }}
@@ -36,117 +33,136 @@ function FrameTemplate({ fields }: TemplateProps) {
       <div
         style={{
           position: "absolute",
-          width: 6,
-          height: 6,
+          width: 10,
+          height: 10,
           backgroundColor: fields.accentColor,
-          opacity: 0.6,
-          top: 25,
-          left: 25,
+          opacity: 0.8,
+          borderRadius: 2,
+          top: 19,
+          left: 19,
           zIndex: 0,
         }}
       />
       <div
         style={{
           position: "absolute",
-          width: 6,
-          height: 6,
+          width: 10,
+          height: 10,
           backgroundColor: fields.accentColor,
-          opacity: 0.6,
-          top: 25,
-          right: 25,
+          opacity: 0.8,
+          borderRadius: 2,
+          top: 19,
+          right: 19,
           zIndex: 0,
         }}
       />
       <div
         style={{
           position: "absolute",
-          width: 6,
-          height: 6,
+          width: 10,
+          height: 10,
           backgroundColor: fields.accentColor,
-          opacity: 0.6,
-          bottom: 25,
-          left: 25,
+          opacity: 0.8,
+          borderRadius: 2,
+          bottom: 19,
+          left: 19,
           zIndex: 0,
         }}
       />
       <div
         style={{
           position: "absolute",
-          width: 6,
-          height: 6,
+          width: 10,
+          height: 10,
           backgroundColor: fields.accentColor,
-          opacity: 0.6,
-          bottom: 25,
-          right: 25,
+          opacity: 0.8,
+          borderRadius: 2,
+          bottom: 19,
+          right: 19,
           zIndex: 0,
         }}
       />
 
       {/* Content */}
       <div
-        className="flex flex-col items-center justify-center w-full h-full"
         style={{
-          padding: 80,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          width: "100%",
+          height: "100%",
+          padding: 72,
           position: "relative",
           zIndex: 1,
         }}
       >
-        {fields.logoUrl && (
-          <img
-            src={fields.logoUrl}
-            alt="Logo"
-            style={{
-              maxHeight: 44,
-              objectFit: "contain",
-            }}
-          />
-        )}
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12 }}>
+          {fields.logoUrl && (
+            <img
+              src={fields.logoUrl}
+              alt="Logo"
+              style={{
+                maxHeight: 48,
+                objectFit: "contain",
+              }}
+            />
+          )}
 
-        {fields.brandName && (
-          <div
-            className="text-center"
-            style={{
-              fontSize: 13,
-              textTransform: "uppercase",
-              letterSpacing: "0.25em",
-              fontWeight: 400,
-              color: "rgba(255,255,255,0.6)",
-              marginTop: fields.logoUrl ? 12 : 0,
-            }}
-          >
-            {fields.brandName}
-          </div>
-        )}
+          {fields.brandName && (
+            <div
+              style={{
+                fontSize: 15,
+                textTransform: "uppercase",
+                letterSpacing: "0.25em",
+                fontWeight: 500,
+                color: "rgba(255,255,255,0.75)",
+                textAlign: "center",
+              }}
+            >
+              {fields.brandName}
+            </div>
+          )}
+        </div>
 
-        {fields.title && (
-          <div
-            className="text-center line-clamp-2"
-            style={{
-              fontSize: 46,
-              fontWeight: 700,
-              color: "#ffffff",
-              lineHeight: 1.2,
-              textWrap: "balance",
-              marginTop: 28,
-            }}
-          >
-            {fields.title}
-          </div>
-        )}
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: 32 }}>
+          {fields.title && (
+            <div
+              style={{
+                fontSize: 56,
+                fontWeight: 700,
+                color: "#ffffff",
+                lineHeight: 1.15,
+                textWrap: "balance",
+                textAlign: "center",
+                overflow: "hidden",
+                display: "-webkit-box",
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: "vertical",
+              }}
+            >
+              {fields.title}
+            </div>
+          )}
 
-        {fields.subtitle && (
-          <div
-            className="text-center line-clamp-2"
-            style={{
-              fontSize: 18,
-              fontWeight: 400,
-              color: "rgba(255,255,255,0.55)",
-              marginTop: 12,
-            }}
-          >
-            {fields.subtitle}
-          </div>
-        )}
+          {fields.subtitle && (
+            <div
+              style={{
+                fontSize: 22,
+                fontWeight: 450,
+                color: "rgba(255,255,255,0.7)",
+                textAlign: "center",
+                marginTop: 14,
+                overflow: "hidden",
+                display: "-webkit-box",
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: "vertical",
+              }}
+            >
+              {fields.subtitle}
+            </div>
+          )}
+        </div>
       </div>
     </TemplateWrapper>
   );
