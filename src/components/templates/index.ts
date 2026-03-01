@@ -6,8 +6,12 @@ import { SplitTemplate } from "./split";
 import { ElegantTemplate } from "./elegant";
 import { GeometricTemplate } from "./geometric";
 import { FrameTemplate } from "./frame";
-import { DiagonalTemplate } from "./diagonal";
+import { LayersTemplate } from "./layers";
 import { MonoTemplate } from "./mono";
+import { EditorialTemplate } from "./editorial";
+import { AuroraTemplate } from "./aurora";
+import { SpotlightTemplate } from "./spotlight";
+import { TypographicTemplate } from "./typographic";
 
 export const TEMPLATE_COMPONENTS: Record<string, ComponentType<TemplateProps>> = {
   minimal: MinimalTemplate,
@@ -16,6 +20,10 @@ export const TEMPLATE_COMPONENTS: Record<string, ComponentType<TemplateProps>> =
   elegant: ElegantTemplate,
   geometric: GeometricTemplate,
   frame: FrameTemplate,
-  diagonal: DiagonalTemplate,
+  layers: LayersTemplate,
   mono: MonoTemplate,
+  editorial: EditorialTemplate,
+  aurora: AuroraTemplate,
+  spotlight: SpotlightTemplate,
+  typographic: TypographicTemplate,
 };
