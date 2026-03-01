@@ -17,10 +17,10 @@ function ColorPicker({ value, onChange, className }: ColorPickerProps) {
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 rounded-lg border border-input px-2.5 py-1.5 text-sm transition-colors hover:bg-accent"
+        className="flex h-8 items-center gap-2 rounded-lg border border-input px-2.5 py-1.5 text-sm transition-colors hover:bg-accent"
       >
         <span
-          className="size-5 rounded-md border border-border shrink-0"
+          className="size-4 rounded-full border border-border shrink-0 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.1)]"
           style={{ backgroundColor: value }}
         />
         <span className="text-muted-foreground font-mono text-xs">

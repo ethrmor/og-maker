@@ -24,8 +24,8 @@ function EditorSidebar({
   const brandingFields = EDITOR_FIELDS.filter((f) => f.group === "branding");
 
   return (
-    <div className="flex h-full flex-col overflow-y-auto border-r border-border bg-background">
-      <div className="flex flex-col gap-6 p-5">
+    <div className="flex h-full flex-col overflow-y-auto border-r border-border bg-surface">
+      <div className="flex flex-col gap-8 p-5">
         {/* Template picker */}
         <TemplatePicker
           selectedId={selectedTemplateId}
@@ -33,11 +33,11 @@ function EditorSidebar({
         />
 
         {/* Divider */}
-        <div className="h-px bg-border" />
+        <div className="h-px bg-border/60" />
 
         {/* Content fields */}
         <fieldset className="flex flex-col gap-3">
-          <legend className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+          <legend className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
             Content
           </legend>
           {contentFields.map((field) => (
@@ -74,18 +74,23 @@ function EditorSidebar({
                       </button>
                     </div>
                   )}
-                  <Input
-                    id={field.key}
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-                      if (file) {
-                        const url = URL.createObjectURL(file);
-                        onUpdateField("logoUrl", url);
-                      }
-                    }}
-                  />
+                  <label className="flex items-center justify-center gap-2 rounded-lg border-2 border-dashed border-border/70 bg-muted/30 px-3 py-2.5 text-xs text-muted-foreground cursor-pointer transition-colors hover:border-primary/40 hover:bg-primary/5 hover:text-foreground">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                    Upload image
+                    <Input
+                      id={field.key}
+                      type="file"
+                      accept="image/*"
+                      className="sr-only"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          const url = URL.createObjectURL(file);
+                          onUpdateField("logoUrl", url);
+                        }
+                      }}
+                    />
+                  </label>
                 </div>
               )}
               {field.type === "color" && (
@@ -99,11 +104,11 @@ function EditorSidebar({
         </fieldset>
 
         {/* Divider */}
-        <div className="h-px bg-border" />
+        <div className="h-px bg-border/60" />
 
         {/* Branding fields (non-content, non-file) */}
         <fieldset className="flex flex-col gap-3">
-          <legend className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+          <legend className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
             Branding
           </legend>
           {brandingFields.map((field) => (
@@ -129,18 +134,23 @@ function EditorSidebar({
                       </button>
                     </div>
                   )}
-                  <Input
-                    id={field.key}
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-                      if (file) {
-                        const url = URL.createObjectURL(file);
-                        onUpdateField("logoUrl", url);
-                      }
-                    }}
-                  />
+                  <label className="flex items-center justify-center gap-2 rounded-lg border-2 border-dashed border-border/70 bg-muted/30 px-3 py-2.5 text-xs text-muted-foreground cursor-pointer transition-colors hover:border-primary/40 hover:bg-primary/5 hover:text-foreground">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                    Upload image
+                    <Input
+                      id={field.key}
+                      type="file"
+                      accept="image/*"
+                      className="sr-only"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          const url = URL.createObjectURL(file);
+                          onUpdateField("logoUrl", url);
+                        }
+                      }}
+                    />
+                  </label>
                 </div>
               )}
               {field.type === "color" && (
@@ -154,11 +164,11 @@ function EditorSidebar({
         </fieldset>
 
         {/* Divider */}
-        <div className="h-px bg-border" />
+        <div className="h-px bg-border/60" />
 
         {/* Background section */}
         <fieldset className="flex flex-col gap-3">
-          <legend className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+          <legend className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
             Background
           </legend>
 
@@ -231,17 +241,22 @@ function EditorSidebar({
                   </button>
                 </div>
               )}
-              <Input
-                type="file"
-                accept="image/*"
-                onChange={(e) => {
-                  const file = e.target.files?.[0];
-                  if (file) {
-                    const url = URL.createObjectURL(file);
-                    onUpdateField("backgroundImageUrl", url);
-                  }
-                }}
-              />
+              <label className="flex items-center justify-center gap-2 rounded-lg border-2 border-dashed border-border/70 bg-muted/30 px-3 py-2.5 text-xs text-muted-foreground cursor-pointer transition-colors hover:border-primary/40 hover:bg-primary/5 hover:text-foreground">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                Upload image
+                <Input
+                  type="file"
+                  accept="image/*"
+                  className="sr-only"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      const url = URL.createObjectURL(file);
+                      onUpdateField("backgroundImageUrl", url);
+                    }
+                  }}
+                />
+              </label>
             </div>
           )}
         </fieldset>

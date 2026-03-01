@@ -55,7 +55,7 @@ function PreviewCanvas({
         className="flex flex-1 items-center justify-center overflow-hidden"
         style={{
           backgroundImage:
-            "radial-gradient(circle, var(--color-border) 1px, transparent 1px)",
+            "radial-gradient(circle, color-mix(in oklch, var(--color-border) 40%, transparent) 0.75px, transparent 0.75px)",
           backgroundSize: "16px 16px",
         }}
       >
@@ -71,7 +71,7 @@ function PreviewCanvas({
           <div
             ref={canvasRef}
             style={{ width: 1200, height: 630 }}
-            className="shadow-2xl"
+            className="shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),0_10px_25px_-5px_rgba(0,0,0,0.08),0_25px_50px_-12px_rgba(0,0,0,0.15)]"
           >
             <TemplateComponent fields={fields} />
           </div>
@@ -79,12 +79,12 @@ function PreviewCanvas({
       </div>
 
       {/* Export actions */}
-      <div className="flex items-center justify-center gap-3 border-t border-border bg-background px-6 py-4">
+      <div className="flex items-center justify-center gap-3 border-t border-border/50 shadow-[0_-1px_3px_-1px_rgba(0,0,0,0.06)] dark:shadow-[0_-1px_3px_-1px_rgba(0,0,0,0.3)] bg-background px-6 py-5">
         <button
           type="button"
           onClick={() => download()}
           disabled={isExporting}
-          className="inline-flex h-9 items-center gap-2 rounded-lg bg-primary px-4 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 disabled:pointer-events-none disabled:opacity-50"
+          className="inline-flex h-10 items-center gap-2 rounded-lg bg-primary px-4 text-sm font-medium text-primary-foreground transition-all duration-200 hover:bg-primary/90 shadow-[0_1px_2px_rgba(0,0,0,0.05),0_4px_12px_rgba(0,0,0,0.08)] hover:shadow-[0_1px_2px_rgba(0,0,0,0.05),0_6px_16px_rgba(0,0,0,0.12)] disabled:pointer-events-none disabled:opacity-50"
         >
           {isExporting ? (
             <span className="size-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
@@ -110,7 +110,7 @@ function PreviewCanvas({
           type="button"
           onClick={() => copyToClipboard()}
           disabled={isExporting}
-          className="inline-flex h-9 items-center gap-2 rounded-lg border border-input bg-background px-4 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground disabled:pointer-events-none disabled:opacity-50"
+          className="inline-flex h-10 items-center gap-2 rounded-lg border border-input bg-background px-4 text-sm font-medium transition-all duration-200 hover:bg-accent hover:text-accent-foreground hover:shadow-sm disabled:pointer-events-none disabled:opacity-50"
         >
           <svg
             width="16"

@@ -15,23 +15,23 @@ function TemplatePicker({ selectedId, onSelect }: TemplatePickerProps) {
       >
         Template
       </span>
-      <div className="grid grid-cols-4 gap-2">
+      <div className="grid grid-cols-4 gap-2.5">
         {TEMPLATES.map((template) => (
           <button
             key={template.id}
             type="button"
             onClick={() => onSelect(template.id)}
             className={cn(
-              "group relative flex flex-col items-center gap-1.5 rounded-lg border-2 p-1.5 transition-all",
+              "group relative flex flex-col items-center gap-1.5 rounded-lg border-2 p-1.5 transition-all duration-200",
               selectedId === template.id
-                ? "border-primary ring-2 ring-primary/20"
-                : "border-transparent hover:border-border"
+                ? "border-primary shadow-[0_0_0_3px] shadow-primary/15 ring-0"
+                : "border-transparent hover:border-border hover:scale-[1.03] hover:-translate-y-0.5"
             )}
           >
             {/* Thumbnail */}
             <div
               className={cn(
-                "aspect-video w-full rounded-md border",
+                "aspect-video w-full rounded-lg border overflow-hidden",
                 selectedId === template.id
                   ? "border-primary/30"
                   : "border-border"
