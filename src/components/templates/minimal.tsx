@@ -11,16 +11,29 @@ function MinimalTemplate({ fields }: TemplateProps) {
           inset: 0,
           backgroundImage: "radial-gradient(circle, #e5e7eb 1px, transparent 1px)",
           backgroundSize: "24px 24px",
-          opacity: 0.4,
+          opacity: 0.15,
+          pointerEvents: "none",
+        }}
+      />
+
+      {/* Radial glow */}
+      <div
+        style={{
+          position: "absolute",
+          width: 800,
+          height: 800,
+          background: `radial-gradient(circle, ${fields.accentColor}15 0%, transparent 70%)`,
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
           pointerEvents: "none",
         }}
       />
 
       <div
-        className="flex flex-col items-center justify-center w-full h-full relative z-10"
+        className="flex flex-col items-center justify-center w-full h-full relative z-10 gap-6"
         style={{
           padding: 64,
-          transform: "translateY(-10px)",
         }}
       >
         {fields.logoUrl && (
@@ -39,7 +52,6 @@ function MinimalTemplate({ fields }: TemplateProps) {
               color: "#374151",
               textTransform: "uppercase",
               letterSpacing: "0.18em",
-              marginTop: fields.logoUrl ? 12 : 0,
             }}
           >
             {fields.brandName}
@@ -48,11 +60,10 @@ function MinimalTemplate({ fields }: TemplateProps) {
 
         <div
           style={{
-            width: 80,
-            height: 3,
+            width: 120,
+            height: 1.5,
             backgroundColor: fields.accentColor,
-            marginTop: 32,
-            marginBottom: 32,
+            opacity: 0.7,
           }}
         />
 
@@ -64,6 +75,7 @@ function MinimalTemplate({ fields }: TemplateProps) {
               color: "#111827",
               textAlign: "center",
               textWrap: "balance",
+              letterSpacing: "-0.03em",
               lineHeight: 1.1,
               overflow: "hidden",
               display: "-webkit-box",
@@ -83,7 +95,6 @@ function MinimalTemplate({ fields }: TemplateProps) {
               color: "#4b5563",
               textAlign: "center",
               lineHeight: 1.5,
-              marginTop: 16,
               overflow: "hidden",
               display: "-webkit-box",
               WebkitLineClamp: 2,

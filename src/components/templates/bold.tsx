@@ -4,6 +4,28 @@ import { TemplateWrapper } from "@/components/templates/template-wrapper";
 function BoldTemplate({ fields }: TemplateProps) {
   return (
     <TemplateWrapper fields={fields}>
+      {/* Background accent color */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          backgroundColor: `color-mix(in srgb, ${fields.accentColor} 10%, #0f172a)`,
+          zIndex: 0,
+        }}
+      />
+      {/* Angled accent slash */}
+      <div
+        style={{
+          position: "absolute",
+          width: "150%",
+          height: 2,
+          backgroundColor: fields.accentColor,
+          transform: "rotate(-15deg)",
+          top: "40%",
+          left: "-25%",
+          opacity: 0.4,
+        }}
+      />
       {/* Noise overlay */}
       <div
         style={{
@@ -23,7 +45,9 @@ function BoldTemplate({ fields }: TemplateProps) {
           top: -80,
           width: 500,
           height: 500,
-          backgroundColor: "rgba(255,255,255,0.06)",
+          backgroundColor: fields.accentColor,
+          filter: "blur(60px)",
+          opacity: 0.15,
           borderRadius: "50%",
           pointerEvents: "none",
         }}
@@ -35,7 +59,9 @@ function BoldTemplate({ fields }: TemplateProps) {
           bottom: 60,
           width: 200,
           height: 200,
-          backgroundColor: "rgba(255,255,255,0.04)",
+          backgroundColor: fields.accentColor,
+          filter: "blur(60px)",
+          opacity: 0.15,
           borderRadius: "50%",
           pointerEvents: "none",
         }}
@@ -87,6 +113,7 @@ function BoldTemplate({ fields }: TemplateProps) {
               display: "-webkit-box",
               WebkitLineClamp: 2,
               WebkitBoxOrient: "vertical",
+              textShadow: "0 8px 32px rgba(0,0,0,0.4)",
             }}
           >
             {fields.title}

@@ -15,73 +15,71 @@ function FrameTemplate({ fields }: TemplateProps) {
         }}
       />
 
+      {/* Watermark Logo */}
+      {fields.logoUrl && (
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            opacity: 0.03,
+            zIndex: 0,
+            pointerEvents: "none",
+          }}
+        >
+          <img
+            src={fields.logoUrl}
+            alt="Watermark"
+            style={{
+              width: "60%",
+              height: "60%",
+              objectFit: "contain",
+            }}
+          />
+        </div>
+      )}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          opacity: 0.05,
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+          zIndex: 0,
+        }}
+      />
+
       {/* Outer Frame */}
       <div
         style={{
           position: "absolute",
           inset: 24,
-          border: "2.5px solid",
-          borderColor: fields.accentColor,
-          opacity: 0.9,
+          border: "1px solid",
+          borderColor: `${fields.accentColor}66`,
+          boxShadow: `inset 0 0 0 8px transparent, inset 0 0 0 9px ${fields.accentColor}40`,
           borderRadius: 12,
           pointerEvents: "none",
           zIndex: 0,
         }}
       />
 
-      {/* Corner Ornaments */}
-      <div
-        style={{
-          position: "absolute",
-          width: 10,
-          height: 10,
-          backgroundColor: fields.accentColor,
-          opacity: 0.8,
-          borderRadius: 2,
-          top: 19,
-          left: 19,
-          zIndex: 0,
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          width: 10,
-          height: 10,
-          backgroundColor: fields.accentColor,
-          opacity: 0.8,
-          borderRadius: 2,
-          top: 19,
-          right: 19,
-          zIndex: 0,
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          width: 10,
-          height: 10,
-          backgroundColor: fields.accentColor,
-          opacity: 0.8,
-          borderRadius: 2,
-          bottom: 19,
-          left: 19,
-          zIndex: 0,
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          width: 10,
-          height: 10,
-          backgroundColor: fields.accentColor,
-          opacity: 0.8,
-          borderRadius: 2,
-          bottom: 19,
-          right: 19,
-          zIndex: 0,
-        }}
-      />
+      {/* Corner Brackets */}
+      {/* Top Left */}
+      <div style={{ position: "absolute", top: 20, left: 20, width: 16, height: 1, backgroundColor: fields.accentColor, opacity: 0.8, zIndex: 0 }} />
+      <div style={{ position: "absolute", top: 20, left: 20, width: 1, height: 16, backgroundColor: fields.accentColor, opacity: 0.8, zIndex: 0 }} />
+      
+      {/* Top Right */}
+      <div style={{ position: "absolute", top: 20, right: 20, width: 16, height: 1, backgroundColor: fields.accentColor, opacity: 0.8, zIndex: 0 }} />
+      <div style={{ position: "absolute", top: 20, right: 20, width: 1, height: 16, backgroundColor: fields.accentColor, opacity: 0.8, zIndex: 0 }} />
+      
+      {/* Bottom Left */}
+      <div style={{ position: "absolute", bottom: 20, left: 20, width: 16, height: 1, backgroundColor: fields.accentColor, opacity: 0.8, zIndex: 0 }} />
+      <div style={{ position: "absolute", bottom: 20, left: 20, width: 1, height: 16, backgroundColor: fields.accentColor, opacity: 0.8, zIndex: 0 }} />
+      
+      {/* Bottom Right */}
+      <div style={{ position: "absolute", bottom: 20, right: 20, width: 16, height: 1, backgroundColor: fields.accentColor, opacity: 0.8, zIndex: 0 }} />
+      <div style={{ position: "absolute", bottom: 20, right: 20, width: 1, height: 16, backgroundColor: fields.accentColor, opacity: 0.8, zIndex: 0 }} />
 
       {/* Content */}
       <div
@@ -112,15 +110,39 @@ function FrameTemplate({ fields }: TemplateProps) {
           {fields.brandName && (
             <div
               style={{
-                fontSize: 15,
-                textTransform: "uppercase",
-                letterSpacing: "0.25em",
-                fontWeight: 500,
-                color: "rgba(255,255,255,0.75)",
-                textAlign: "center",
+                display: "flex",
+                alignItems: "center",
+                gap: 12,
               }}
             >
-              {fields.brandName}
+              <div
+                style={{
+                  width: 4,
+                  height: 4,
+                  borderRadius: 9999,
+                  backgroundColor: fields.accentColor,
+                }}
+              />
+              <div
+                style={{
+                  fontSize: 15,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.25em",
+                  fontWeight: 500,
+                  color: "rgba(255,255,255,0.75)",
+                  textAlign: "center",
+                }}
+              >
+                {fields.brandName}
+              </div>
+              <div
+                style={{
+                  width: 4,
+                  height: 4,
+                  borderRadius: 9999,
+                  backgroundColor: fields.accentColor,
+                }}
+              />
             </div>
           )}
         </div>
@@ -129,10 +151,11 @@ function FrameTemplate({ fields }: TemplateProps) {
           {fields.title && (
             <div
               style={{
-                fontSize: 56,
+                fontSize: 64,
                 fontWeight: 700,
                 color: "#ffffff",
-                lineHeight: 1.15,
+                lineHeight: 1.05,
+                letterSpacing: "-0.02em",
                 textWrap: "balance",
                 textAlign: "center",
                 overflow: "hidden",

@@ -35,6 +35,27 @@ function ElegantTemplate({ fields }: TemplateProps) {
         }}
       />
 
+      {/* Oversized background shape */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontSize: "800px",
+          fontWeight: 900,
+          color: fields.accentColor,
+          opacity: 0.03,
+          pointerEvents: "none",
+          fontFamily: "serif",
+          lineHeight: 1,
+          userSelect: "none",
+        }}
+      >
+        &amp;
+      </div>
+
       <div
         className="flex flex-col items-center justify-center w-full h-full relative z-10"
         style={{ padding: 64 }}
@@ -55,10 +76,10 @@ function ElegantTemplate({ fields }: TemplateProps) {
           <div
             style={{
               fontSize: 15,
-              fontWeight: 500,
+              fontWeight: 600,
               color: fields.accentColor,
               textTransform: "uppercase",
-              letterSpacing: "0.3em",
+              letterSpacing: "0.15em",
               marginTop: fields.logoUrl ? 16 : 0,
               textAlign: "center",
             }}
@@ -69,9 +90,9 @@ function ElegantTemplate({ fields }: TemplateProps) {
 
         <div
           style={{
-            width: 100,
-            height: 1.5,
-            backgroundColor: fields.accentColor,
+            width: 240,
+            height: 1,
+            background: `linear-gradient(90deg, transparent, ${fields.accentColor}, transparent)`,
             opacity: 0.5,
             marginTop: 32,
             marginBottom: 32,
@@ -101,11 +122,11 @@ function ElegantTemplate({ fields }: TemplateProps) {
         {fields.subtitle && (
           <div
             style={{
-              fontSize: 22,
+              fontSize: 20,
               fontWeight: 400,
-              color: "rgba(255,255,255,0.6)",
+              color: "rgba(255,255,255,0.5)",
               textAlign: "center",
-              lineHeight: 1.5,
+              lineHeight: 1.6,
               marginTop: 18,
               overflow: "hidden",
               display: "-webkit-box",
@@ -117,15 +138,6 @@ function ElegantTemplate({ fields }: TemplateProps) {
           </div>
         )}
 
-        <div
-          style={{
-            width: 100,
-            height: 1.5,
-            backgroundColor: fields.accentColor,
-            opacity: 0.5,
-            marginTop: 32,
-          }}
-        />
       </div>
     </TemplateWrapper>
   );
