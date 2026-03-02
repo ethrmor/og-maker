@@ -43,7 +43,7 @@ function EditorSidebar({
     <div className="flex h-full flex-col min-h-0 border-r border-border bg-surface">
       {/* Header - Template Selector + Actions */}
       <div className="shrink-0 border-b border-border/60 px-5 py-4 space-y-3">
-        <div className="space-y-1.5">
+        <div className="flex flex-col gap-1.5">
           <Label className="text-xs text-muted-foreground uppercase tracking-wider">
             Template
           </Label>
