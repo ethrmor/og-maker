@@ -1,21 +1,36 @@
-import { useCallback, type ComponentType } from "react";
+import { useCallback, useRef, type ComponentType } from "react";
 import type { TemplateProps } from "@/types/template";
 import { useOgEditor } from "@/hooks/use-og-editor";
+
+import { useKeyboardShortcuts } from "@/hooks/use-keyboard-shortcuts";
 import { EditorSidebar } from "@/components/editor/editor-sidebar";
-import { PreviewCanvas } from "@/components/editor/preview-canvas";
+import { PreviewCanvas, type PreviewCanvasRef } from "@/components/editor/preview-canvas";
+import { ShareButton } from "@/components/editor/share-button";
 import { TEMPLATE_COMPONENTS } from "@/components/templates";
 import { ThemeToggle } from "@/components/editor/theme-toggle";
 import { LogoMark } from "@/components/ui/logo-mark";
+import { RotateCcw, Undo2, Redo2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 function OgEditor() {
-  const { state, selectTemplate, updateField, setExporting, resetStyle, clearContent } = useOgEditor();
-
+  const { state, selectTemplate, updateField, setExporting, resetStyle, clearContent, clearAll, undo, redo, canUndo, canRedo, patchFields, setStep, goToNextStep, goToPrevStep, isFirstStep, isLastStep, STEP_ORDER } = useOgEditor();
+  const previewRef = useRef<PreviewCanvasRef>(null);
   const TemplateComponent: ComponentType<TemplateProps> =
-    TEMPLATE_COMPONENTS[state.selectedTemplateId] ??
-    TEMPLATE_COMPONENTS["minimal"];
+    state.selectedTemplateId.startsWith("custom-")
+      ? TEMPLATE_COMPONENTS["custom"]
+      : TEMPLATE_COMPONENTS[state.selectedTemplateId] ??
+        TEMPLATE_COMPONENTS["minimal"];
 
   const handleExportStart = useCallback(() => setExporting(true), [setExporting]);
   const handleExportEnd = useCallback(() => setExporting(false), [setExporting]);
+
+  // Keyboard shortcuts
+  useKeyboardShortcuts({
+    onDownload: () => previewRef.current?.download(),
+    onCopy: () => previewRef.current?.copyToClipboard(),
+    onUndo: undo,
+    onRedo: redo,
+  });
 
   return (
     <div className="flex h-screen flex-col overflow-hidden bg-background text-foreground">
@@ -27,7 +42,40 @@ function OgEditor() {
           </div>
           <span className="text-[15px] font-bold">OG Maker</span>
         </div>
-        <ThemeToggle />
+        <div className="flex items-center gap-1">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={undo}
+            disabled={!canUndo}
+            className="text-muted-foreground hover:text-foreground h-8 px-2 disabled:opacity-30"
+            title="Undo (⌘Z)"
+          >
+            <Undo2 className="size-4 mr-1" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={redo}
+            disabled={!canRedo}
+            className="text-muted-foreground hover:text-foreground h-8 px-2 disabled:opacity-30"
+            title="Redo (⌘Shift+Z)"
+          >
+            <Redo2 className="size-4 mr-1" />
+          </Button>
+          <div className="w-px h-4 bg-border mx-1" />
+          <ShareButton templateId={state.selectedTemplateId} fields={state.fields} />
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={clearAll}
+            className="text-muted-foreground hover:text-foreground h-8 px-2"
+          >
+            <RotateCcw className="size-4 mr-1" />
+            Reset all
+          </Button>
+          <ThemeToggle />
+        </div>
       </header>
 
       {/* Editor body */}
@@ -35,12 +83,21 @@ function OgEditor() {
         <EditorSidebar
           fields={state.fields}
           selectedTemplateId={state.selectedTemplateId}
+          currentStep={state.currentStep}
           onSelectTemplate={selectTemplate}
           onUpdateField={updateField}
           onResetStyle={resetStyle}
           onClearContent={clearContent}
+          onPatchFields={patchFields}
+          onSetStep={setStep}
+          onNextStep={goToNextStep}
+          onPrevStep={goToPrevStep}
+          isFirstStep={isFirstStep}
+          isLastStep={isLastStep}
+          stepOrder={STEP_ORDER}
         />
         <PreviewCanvas
+          ref={previewRef}
           fields={state.fields}
           TemplateComponent={TemplateComponent}
           isExporting={state.isExporting}
