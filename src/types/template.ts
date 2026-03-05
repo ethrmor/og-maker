@@ -14,16 +14,9 @@ export interface TemplateFields {
   backgroundColor: string; // Hex
   gradientPreset: string; // Preset ID from gradients.ts
   backgroundImageUrl: string | null;
-
-  // Customization (for custom template)
-  layout: "centered" | "left" | "right";
-  textAlign: "left" | "center" | "right";
-  titleSize: "sm" | "md" | "lg" | "xl";
-  subtitleSize: "sm" | "md" | "lg";
-  padding: "sm" | "md" | "lg" | "xl";
-  showLogo: boolean;
-  screenshotUrl: string | null;
 }
+
+export type EditorStep = "template" | "content" | "branding" | "visuals";
 
 // === Per-field rendering config ===
 export interface FieldConfig {
@@ -32,7 +25,7 @@ export interface FieldConfig {
   type: "text" | "textarea" | "color" | "file" | "select" | "toggle";
   placeholder?: string;
   required?: boolean;
-  group: "content" | "branding" | "customization";
+  group: "content" | "branding";
   options?: { value: string; label: string }[]; // For select type
 }
 
@@ -41,12 +34,14 @@ export interface TemplateMeta {
   id: string;
   name: string;
   description: string;
+  tags: string[];
   thumbnailGradient: string; // CSS gradient/color for picker card
   defaults: Pick<
     TemplateFields,
     "accentColor" | "backgroundType" | "backgroundColor" | "gradientPreset"
   >;
 }
+
 
 // === Props every template component receives ===
 export interface TemplateProps {
@@ -58,11 +53,18 @@ export interface EditorState {
   selectedTemplateId: string;
   fields: TemplateFields;
   isExporting: boolean;
+  currentStep: EditorStep;
 }
 
 export type EditorAction =
+  | { type: "UNDO" }
+  | { type: "REDO" }
   | { type: "SELECT_TEMPLATE"; templateId: string }
   | { type: "UPDATE_FIELD"; key: keyof TemplateFields; value: string | null | boolean }
   | { type: "SET_EXPORTING"; value: boolean }
   | { type: "RESET_STYLE" }
-  | { type: "CLEAR_CONTENT" };
+  | { type: "CLEAR_CONTENT" }
+  | { type: "PATCH_FIELDS"; patch: Partial<TemplateFields> }
+  | { type: "SET_STEP"; step: EditorStep }
+  | { type: "NEXT_STEP" }
+  | { type: "PREV_STEP" };
