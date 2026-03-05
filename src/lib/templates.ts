@@ -36,76 +36,6 @@ export const EDITOR_FIELDS: FieldConfig[] = [
     type: "color",
     group: "branding",
   },
-  // Customization fields (shown for custom template)
-  {
-    key: "layout",
-    label: "Layout",
-    type: "select",
-    group: "customization",
-    options: [
-      { value: "centered", label: "Centered" },
-      { value: "left", label: "Left Aligned" },
-      { value: "right", label: "Right Aligned" },
-    ],
-  },
-  {
-    key: "textAlign",
-    label: "Text Alignment",
-    type: "select",
-    group: "customization",
-    options: [
-      { value: "left", label: "Left" },
-      { value: "center", label: "Center" },
-      { value: "right", label: "Right" },
-    ],
-  },
-  {
-    key: "titleSize",
-    label: "Title Size",
-    type: "select",
-    group: "customization",
-    options: [
-      { value: "sm", label: "Small" },
-      { value: "md", label: "Medium" },
-      { value: "lg", label: "Large" },
-      { value: "xl", label: "Extra Large" },
-    ],
-  },
-  {
-    key: "subtitleSize",
-    label: "Subtitle Size",
-    type: "select",
-    group: "customization",
-    options: [
-      { value: "sm", label: "Small" },
-      { value: "md", label: "Medium" },
-      { value: "lg", label: "Large" },
-    ],
-  },
-  {
-    key: "padding",
-    label: "Padding",
-    type: "select",
-    group: "customization",
-    options: [
-      { value: "sm", label: "Small" },
-      { value: "md", label: "Medium" },
-      { value: "lg", label: "Large" },
-      { value: "xl", label: "Extra Large" },
-    ],
-  },
-  {
-    key: "showLogo",
-    label: "Show Logo",
-    type: "toggle",
-    group: "customization",
-  },
-  {
-    key: "screenshotUrl",
-    label: "Screenshot",
-    type: "file",
-    group: "customization",
-  },
 ];
 
 // Template registry
@@ -114,6 +44,7 @@ export const TEMPLATES: TemplateMeta[] = [
     id: "minimal",
     name: "Minimal",
     description: "Clean, centered, whitespace-forward",
+    tags: ["minimal", "professional"],
     thumbnailGradient: "#ffffff",
     defaults: {
       accentColor: "#6366f1",
@@ -126,6 +57,7 @@ export const TEMPLATES: TemplateMeta[] = [
     id: "bold",
     name: "Bold",
     description: "Vibrant gradient, large text",
+    tags: ["bold", "colorful"],
     thumbnailGradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
     defaults: {
       accentColor: "#ffffff",
@@ -138,6 +70,7 @@ export const TEMPLATES: TemplateMeta[] = [
     id: "split",
     name: "Split",
     description: "Asymmetric two-tone, editorial",
+    tags: ["professional", "minimal"],
     thumbnailGradient: "linear-gradient(90deg, #ffffff 58%, #2563eb 58%)",
     defaults: {
       accentColor: "#2563eb",
@@ -150,6 +83,7 @@ export const TEMPLATES: TemplateMeta[] = [
     id: "elegant",
     name: "Elegant",
     description: "Dark background, refined luxury",
+    tags: ["dark", "professional"],
     thumbnailGradient: "linear-gradient(135deg, #0a0a0b 0%, #1a1a2e 100%)",
     defaults: {
       accentColor: "#c9a96e",
@@ -162,6 +96,7 @@ export const TEMPLATES: TemplateMeta[] = [
     id: "geometric",
     name: "Geometric",
     description: "Abstract shapes, modern tech",
+    tags: ["bold", "colorful", "professional"],
     thumbnailGradient: "#f8fafc",
     defaults: {
       accentColor: "#8b5cf6",
@@ -174,6 +109,7 @@ export const TEMPLATES: TemplateMeta[] = [
     id: "frame",
     name: "Frame",
     description: "Decorative border, poster feel",
+    tags: ["bold", "dark", "colorful"],
     thumbnailGradient: "linear-gradient(135deg, #1e1b4b 0%, #4338ca 100%)",
     defaults: {
       accentColor: "#e2e8f0",
@@ -186,6 +122,7 @@ export const TEMPLATES: TemplateMeta[] = [
     id: "layers",
     name: "Layers",
     description: "Overlapping cards, depth and dimension",
+    tags: ["colorful", "professional"],
     thumbnailGradient: "linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%)",
     defaults: {
       accentColor: "#0ea5e9",
@@ -198,6 +135,7 @@ export const TEMPLATES: TemplateMeta[] = [
     id: "mono",
     name: "Mono",
     description: "Single accent color dominates",
+    tags: ["bold", "colorful"],
     thumbnailGradient: "#dc2626",
     defaults: {
       accentColor: "#dc2626",
@@ -210,6 +148,7 @@ export const TEMPLATES: TemplateMeta[] = [
     id: "editorial",
     name: "Editorial",
     description: "Magazine-style layout with elegant typography",
+    tags: ["professional", "minimal"],
     thumbnailGradient: "#F4F0EA",
     defaults: {
       accentColor: "#8b4513",
@@ -222,6 +161,7 @@ export const TEMPLATES: TemplateMeta[] = [
     id: "aurora",
     name: "Aurora",
     description: "Organic flowing shapes with glassmorphism",
+    tags: ["dark", "colorful"],
     thumbnailGradient: "linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)",
     defaults: {
       accentColor: "#7c3aed",
@@ -234,6 +174,7 @@ export const TEMPLATES: TemplateMeta[] = [
     id: "spotlight",
     name: "Spotlight",
     description: "Dramatic lighting with cinematic feel",
+    tags: ["dark", "professional"],
     thumbnailGradient: "#050505",
     defaults: {
       accentColor: "#f59e0b",
@@ -246,21 +187,10 @@ export const TEMPLATES: TemplateMeta[] = [
     id: "typographic",
     name: "Typographic",
     description: "Bold typography as art, Swiss poster style",
+    tags: ["bold", "minimal", "professional"],
     thumbnailGradient: "#ffffff",
     defaults: {
       accentColor: "#ec4899",
-      backgroundType: "solid",
-      backgroundColor: "#ffffff",
-      gradientPreset: "sunset",
-    },
-  },
-  {
-    id: "custom",
-    name: "Custom",
-    description: "Full control over layout, spacing, and typography",
-    thumbnailGradient: "linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%)",
-    defaults: {
-      accentColor: "#6366f1",
       backgroundType: "solid",
       backgroundColor: "#ffffff",
       gradientPreset: "sunset",
@@ -282,12 +212,4 @@ export const DEFAULT_FIELDS: TemplateFields = {
   backgroundColor: "#ffffff",
   gradientPreset: "sunset",
   backgroundImageUrl: null,
-  // Customization defaults
-  layout: "centered",
-  textAlign: "center",
-  titleSize: "lg",
-  subtitleSize: "md",
-  padding: "lg",
-  showLogo: true,
-  screenshotUrl: null,
 };
