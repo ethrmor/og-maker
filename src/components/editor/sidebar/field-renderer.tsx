@@ -13,6 +13,13 @@ import { ColorPicker } from "@/components/ui/color-picker";
 import { FileUpload } from "@/components/ui/file-upload";
 import { cn } from "@/lib/utils";
 
+// OG image character limits
+const CHARACTER_LIMITS: Partial<Record<keyof TemplateFields, { max: number; warning: number }>> = {
+  title: { max: 70, warning: 60 },
+  subtitle: { max: 120, warning: 100 },
+  brandName: { max: 50, warning: 40 },
+};
+
 interface FieldRendererProps {
   field: FieldConfig;
   value: TemplateFields[keyof TemplateFields];
@@ -23,16 +30,41 @@ const FieldRenderer = React.forwardRef<HTMLDivElement, FieldRendererProps>(
   ({ field, value, onChange }, ref) => {
     const renderInput = () => {
       switch (field.type) {
-        case "text":
+        case "text": {
+          const strValue = (value as string) ?? "";
+          const limit = CHARACTER_LIMITS[field.key];
+          const charCount = strValue.length;
+          const isOverLimit = limit && charCount > limit.max;
+          const isNearLimit = limit && charCount > limit.warning && charCount <= limit.max;
+
           return (
-            <Input
-              id={field.key}
-              value={(value as string) ?? ""}
-              onChange={(e) => onChange(e.target.value)}
-              placeholder={field.placeholder}
-              className="h-8"
-            />
+            <div className="space-y-1">
+              <Input
+                id={field.key}
+                value={strValue}
+                onChange={(e) => onChange(e.target.value)}
+                placeholder={field.placeholder}
+                className="h-8"
+              />
+              {limit && (
+                <div className="flex justify-end">
+                  <span
+                    className={cn(
+                      "text-[10px]",
+                      isOverLimit
+                        ? "text-destructive font-medium"
+                        : isNearLimit
+                        ? "text-amber-500"
+                        : "text-muted-foreground"
+                    )}
+                  >
+                    {charCount}/{limit.max}
+                  </span>
+                </div>
+              )}
+            </div>
           );
+        }
 
         case "select":
           return (
@@ -63,50 +95,18 @@ const FieldRenderer = React.forwardRef<HTMLDivElement, FieldRendererProps>(
 
         case "file": {
           const isLogo = field.key === "logoUrl";
-          const isScreenshot = field.key === "screenshotUrl";
 
           return (
             <FileUpload
               value={(value as string | null) ?? null}
               onChange={(url) => onChange(url)}
               accept="image/*"
-              label={isLogo ? "Upload logo" : isScreenshot ? "Upload screenshot" : "Upload image"}
+              label={isLogo ? "Upload logo" : "Upload image"}
               fit={isLogo ? "contain" : "cover"}
-              maxPreviewHeight={isLogo ? 32 : isScreenshot ? 64 : 48}
+              maxPreviewHeight={isLogo ? 32 : 48}
             />
           );
         }
-
-        case "toggle":
-          return (
-            <button
-              type="button"
-              id={field.key}
-              onClick={() => onChange(!(value as boolean))}
-              aria-pressed={value as boolean}
-              className={cn(
-                "flex items-center justify-between w-full h-8 px-3 rounded-md border text-xs transition-colors focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50",
-                value
-                  ? "bg-primary/10 border-primary text-primary"
-                  : "bg-muted/30 border-border text-muted-foreground hover:text-foreground"
-              )}
-            >
-              <span>{value ? "On" : "Off"}</span>
-              <span
-                className={cn(
-                  "w-8 h-4 rounded-full relative transition-colors",
-                  value ? "bg-primary" : "bg-muted-foreground/30"
-                )}
-              >
-                <span
-                  className={cn(
-                    "absolute top-0.5 w-3 h-3 rounded-full bg-white transition-all",
-                    value ? "left-[calc(100%-14px)]" : "left-0.5"
-                  )}
-                />
-              </span>
-            </button>
-          );
 
         default:
           return null;
