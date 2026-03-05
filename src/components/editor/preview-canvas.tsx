@@ -1,6 +1,7 @@
-import { useRef, useState, useEffect, useCallback, type ComponentType } from "react";
+import { useRef, useState, useEffect, useCallback, useImperativeHandle, forwardRef, type ComponentType } from "react";
 import type { TemplateProps, TemplateFields } from "@/types/template";
 import { useExportPng } from "@/hooks/use-export-png";
+import { BatchExportButton } from "@/components/editor/batch-export-button";
 
 interface PreviewCanvasProps {
   fields: TemplateFields;
@@ -10,13 +11,18 @@ interface PreviewCanvasProps {
   onExportEnd: () => void;
 }
 
-function PreviewCanvas({
+export interface PreviewCanvasRef {
+  download: () => Promise<void>;
+  copyToClipboard: () => Promise<void>;
+}
+
+const PreviewCanvas = forwardRef<PreviewCanvasRef, PreviewCanvasProps>(function PreviewCanvas({
   fields,
   TemplateComponent,
   isExporting,
   onExportStart,
   onExportEnd,
-}: PreviewCanvasProps) {
+}, ref) {
   const canvasRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(0.5);
@@ -25,7 +31,14 @@ function PreviewCanvas({
     canvasRef,
     onExportStart,
     onExportEnd,
+    brandName: fields.brandName,
   });
+
+  // Expose actions via ref for keyboard shortcuts
+  useImperativeHandle(ref, () => ({
+    download,
+    copyToClipboard,
+  }), [download, copyToClipboard]);
 
   const updateScale = useCallback(() => {
     const container = containerRef.current;
@@ -83,9 +96,9 @@ function PreviewCanvas({
             >
               <TemplateComponent fields={fields} />
             </div>
+          </div>
         </div>
       </div>
-    </div>
 
       {/* Export actions */}
       <div className="flex items-center justify-center gap-3 border-t border-border/50 shadow-[0_-1px_3px_-1px_rgba(0,0,0,0.06)] dark:shadow-[0_-1px_3px_-1px_rgba(0,0,0,0.3)] bg-background px-6 py-5">
@@ -136,9 +149,16 @@ function PreviewCanvas({
           </svg>
           Copy to Clipboard
         </button>
+        <BatchExportButton
+          fields={fields}
+          disabled={isExporting}
+          onExportStart={onExportStart}
+          onExportEnd={onExportEnd}
+        />
       </div>
     </div>
   );
-}
+});
 
 export { PreviewCanvas };
+export type { PreviewCanvasProps };
