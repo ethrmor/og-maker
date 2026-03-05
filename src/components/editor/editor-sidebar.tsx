@@ -18,7 +18,7 @@ import { RotateCcw, Trash2 } from "lucide-react";
 import { Wand2 } from "lucide-react";
 import { generateSampleContent } from "@/lib/sample-content";
 import { useToast } from "@/components/ui/toast";
-import { PLATFORM_PRESETS } from "@/lib/platform-presets";
+import { PLATFORM_PRESETS, getPresetById } from "@/lib/platform-presets";
 import { cn } from "@/lib/utils";
 
 interface EditorSidebarProps {
@@ -130,13 +130,25 @@ function EditorSidebar({
                 value={platformPresetId}
                 onValueChange={(value) => value && onSetPlatformPreset?.(value)}
               >
-                <SelectTrigger className="h-6 text-[10px] w-[110px]">
-                  <SelectValue placeholder="Platform" />
+                <SelectTrigger className="h-6 text-[10px] flex-1">
+                  <SelectValue placeholder="Platform">
+                    {(() => {
+                      const preset = getPresetById(platformPresetId);
+                      return (
+                        <span className="flex items-center gap-1">
+                          <span>{preset.name}</span>
+                          <span className="text-muted-foreground/70">
+                            ({preset.width}×{preset.height})
+                          </span>
+                        </span>
+                      );
+                    })()}
+                  </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
                   {PLATFORM_PRESETS.map((preset) => (
                     <SelectItem key={preset.id} value={preset.id} className="text-xs">
-                      {preset.name}
+                      {preset.name} ({preset.width}×{preset.height})
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -305,7 +317,7 @@ function EditorSidebar({
         </div>
       </div>
 
-      <div className="shrink-0 border-t border-border/60 px-5 py-5 bg-muted/20 flex flex-col justify-center shadow-[0_-1px_3px_-1px_rgba(0,0,0,0.06)] dark:shadow-[0_-1px_3px_-1px_rgba(0,0,0,0.3)]">
+      <div className="shrink-0 border-t border-border/60 px-5 h-[81px] bg-muted/20 flex flex-col justify-center shadow-[0_-1px_3px_-1px_rgba(0,0,0,0.06)] dark:shadow-[0_-1px_3px_-1px_rgba(0,0,0,0.3)]">
         <p className="text-[11px] text-muted-foreground leading-relaxed">
           Changes are previewed instantly. Use the buttons below the canvas to export your OG image.
         </p>

@@ -8,6 +8,7 @@ interface SharePayload {
   v: number;
   t: string;
   f: Partial<TemplateFields>;
+  p: string; // platformPresetId
 }
 
 function toBase64Url(value: string): string {
@@ -68,17 +69,18 @@ export function sanitizeFieldsForShare(fields: TemplateFields): Partial<Template
   };
 }
 
-export function encodeState(templateId: string, fields: TemplateFields): string {
+export function encodeState(templateId: string, fields: TemplateFields, platformPresetId: string): string {
   const payload: SharePayload = {
     v: SHARE_STATE_VERSION,
     t: templateId,
     f: fields,
+    p: platformPresetId,
   };
 
   return toBase64Url(JSON.stringify(payload));
 }
 
-export function decodeState(hash: string): { templateId: string; fields: Partial<TemplateFields> } | null {
+export function decodeState(hash: string): { templateId: string; fields: Partial<TemplateFields>; platformPresetId: string } | null {
   const normalizedHash = hash.replace(/^#/, "");
 
   if (!normalizedHash.startsWith(SHARE_STATE_PREFIX)) {
@@ -101,6 +103,7 @@ export function decodeState(hash: string): { templateId: string; fields: Partial
     const version = decoded.v;
     const templateId = decoded.t;
     const fields = decoded.f;
+    const platformPresetId = decoded.p;
 
     if (version !== SHARE_STATE_VERSION) {
       return null;
@@ -114,9 +117,14 @@ export function decodeState(hash: string): { templateId: string; fields: Partial
       return null;
     }
 
+    if (typeof platformPresetId !== "string") {
+      return null;
+    }
+
     return {
       templateId,
       fields: fields as Partial<TemplateFields>,
+      platformPresetId,
     };
   } catch {
     return null;

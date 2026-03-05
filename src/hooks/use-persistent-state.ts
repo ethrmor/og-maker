@@ -6,6 +6,7 @@ const STORAGE_KEY = "og-maker-state";
 interface PersistedState {
   selectedTemplateId: string;
   fields: EditorState["fields"];
+  platformPresetId: string;
   timestamp: number;
 }
 
@@ -20,6 +21,7 @@ export function usePersistentState() {
       return {
         selectedTemplateId: parsed.selectedTemplateId,
         fields: parsed.fields,
+        platformPresetId: parsed.platformPresetId,
       };
     } catch {
       return null;
@@ -37,6 +39,7 @@ export function usePersistentState() {
         const data: PersistedState = {
           selectedTemplateId: state.selectedTemplateId,
           fields: state.fields,
+          platformPresetId: state.platformPresetId,
           timestamp: Date.now(),
         };
         localStorage.setItem(STORAGE_KEY, JSON.stringify(data));

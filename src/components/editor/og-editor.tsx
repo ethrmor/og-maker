@@ -13,7 +13,7 @@ import { RotateCcw, Undo2, Redo2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 function OgEditor() {
-  const { state, selectTemplate, updateField, setExporting, resetStyle, clearContent, clearAll, undo, redo, canUndo, canRedo, patchFields, setStep, goToNextStep, goToPrevStep, isFirstStep, isLastStep, STEP_ORDER } = useOgEditor();
+  const { state, selectTemplate, updateField, setExporting, resetStyle, clearContent, clearAll, undo, redo, canUndo, canRedo, patchFields, setStep, setPlatformPreset, goToNextStep, goToPrevStep, isFirstStep, isLastStep, STEP_ORDER } = useOgEditor();
   const previewRef = useRef<PreviewCanvasRef>(null);
   const TemplateComponent: ComponentType<TemplateProps> =
     state.selectedTemplateId.startsWith("custom-")
@@ -64,7 +64,7 @@ function OgEditor() {
             <Redo2 className="size-4 mr-1" />
           </Button>
           <div className="w-px h-4 bg-border mx-1" />
-          <ShareButton templateId={state.selectedTemplateId} fields={state.fields} />
+          <ShareButton templateId={state.selectedTemplateId} fields={state.fields} platformPresetId={state.platformPresetId} />
           <Button
             variant="ghost"
             size="sm"
@@ -84,12 +84,14 @@ function OgEditor() {
           fields={state.fields}
           selectedTemplateId={state.selectedTemplateId}
           currentStep={state.currentStep}
+          platformPresetId={state.platformPresetId}
           onSelectTemplate={selectTemplate}
           onUpdateField={updateField}
           onResetStyle={resetStyle}
           onClearContent={clearContent}
           onPatchFields={patchFields}
           onSetStep={setStep}
+          onSetPlatformPreset={setPlatformPreset}
           onNextStep={goToNextStep}
           onPrevStep={goToPrevStep}
           isFirstStep={isFirstStep}
@@ -103,6 +105,7 @@ function OgEditor() {
           isExporting={state.isExporting}
           onExportStart={handleExportStart}
           onExportEnd={handleExportEnd}
+          platformPresetId={state.platformPresetId}
         />
       </div>
     </div>

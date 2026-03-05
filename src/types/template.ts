@@ -54,6 +54,7 @@ export interface EditorState {
   fields: TemplateFields;
   isExporting: boolean;
   currentStep: EditorStep;
+  platformPresetId: string;
 }
 
 export type EditorAction =
@@ -66,5 +67,6 @@ export type EditorAction =
   | { type: "CLEAR_CONTENT" }
   | { type: "PATCH_FIELDS"; patch: Partial<TemplateFields> }
   | { type: "SET_STEP"; step: EditorStep }
+  | { type: "SET_PLATFORM_PRESET"; presetId: string }
   | { type: "NEXT_STEP" }
   | { type: "PREV_STEP" };

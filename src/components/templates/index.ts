@@ -12,6 +12,12 @@ import { EditorialTemplate } from "./editorial";
 import { AuroraTemplate } from "./aurora";
 import { SpotlightTemplate } from "./spotlight";
 import { TypographicTemplate } from "./typographic";
+import { NebulaTemplate } from "./nebula";
+import { BlueprintTemplate } from "./blueprint";
+import { HorizonTemplate } from "./horizon";
+import { KineticTemplate } from "./kinetic";
+import { PrismTemplate } from "./prism";
+import { NoirTemplate } from "./noir";
 
 export const TEMPLATE_COMPONENTS: Record<string, ComponentType<TemplateProps>> = {
   minimal: MinimalTemplate,
@@ -26,4 +32,10 @@ export const TEMPLATE_COMPONENTS: Record<string, ComponentType<TemplateProps>> =
   aurora: AuroraTemplate,
   spotlight: SpotlightTemplate,
   typographic: TypographicTemplate,
+  nebula: NebulaTemplate,
+  blueprint: BlueprintTemplate,
+  horizon: HorizonTemplate,
+  kinetic: KineticTemplate,
+  prism: PrismTemplate,
+  noir: NoirTemplate,
 };

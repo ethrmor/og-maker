@@ -9,6 +9,7 @@ import { getTemplate, DEFAULT_FIELDS } from "@/lib/templates";
 import { decodeState } from "@/lib/url-state";
 import { useToast } from "@/components/ui/toast";
 import { usePersistentState } from "./use-persistent-state";
+import { DEFAULT_PRESET } from "@/lib/platform-presets";
 
 const INITIAL_TEMPLATE_ID = "minimal";
 const MAX_HISTORY_SIZE = 50;
@@ -32,6 +33,7 @@ interface InitialStateSeed {
   selectedTemplateId?: string;
   fields?: Partial<TemplateFields>;
   currentStep?: EditorStep;
+  platformPresetId?: string;
 }
 
 function getInitialState(savedState: InitialStateSeed | null): EditorState {
@@ -47,6 +49,7 @@ function getInitialState(savedState: InitialStateSeed | null): EditorState {
     },
     isExporting: false,
     currentStep: savedState?.currentStep ?? "template",
+    platformPresetId: savedState?.platformPresetId ?? DEFAULT_PRESET.id,
   };
 }
 
@@ -137,6 +140,12 @@ function editorReducer(state: EditorState, action: EditorAction): EditorState {
       return {
         ...state,
         currentStep: action.step,
+      };
+    }
+    case "SET_PLATFORM_PRESET": {
+      return {
+        ...state,
+        platformPresetId: action.presetId,
       };
     }
     case "NEXT_STEP": {
@@ -299,6 +308,9 @@ export function useOgEditor() {
   const setStep = (step: EditorStep) =>
     dispatch({ type: "SET_STEP", step });
 
+  const setPlatformPreset = (presetId: string) =>
+    dispatch({ type: "SET_PLATFORM_PRESET", presetId });
+
   const goToNextStep = () =>
     dispatch({ type: "NEXT_STEP" });
 
@@ -323,6 +335,7 @@ export function useOgEditor() {
     canUndo,
     canRedo,
     setStep,
+    setPlatformPreset,
     goToNextStep,
     goToPrevStep,
     isFirstStep,

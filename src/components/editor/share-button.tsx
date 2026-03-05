@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 interface ShareButtonProps {
   templateId: string;
   fields: TemplateFields;
+  platformPresetId: string;
 }
 
 const SHAREABLE_IMAGE_KEYS: Array<"logoUrl" | "backgroundImageUrl"> = [
@@ -15,7 +16,7 @@ const SHAREABLE_IMAGE_KEYS: Array<"logoUrl" | "backgroundImageUrl"> = [
   "backgroundImageUrl",
 ];
 
-export function ShareButton({ templateId, fields }: ShareButtonProps) {
+export function ShareButton({ templateId, fields, platformPresetId }: ShareButtonProps) {
   const { showToast } = useToast();
 
   const handleShare = useCallback(async () => {
@@ -33,7 +34,7 @@ export function ShareButton({ templateId, fields }: ShareButtonProps) {
         return Boolean(originalValue) && sharedValue !== originalValue;
       });
 
-      const encoded = encodeState(templateId, shareFields);
+      const encoded = encodeState(templateId, shareFields, platformPresetId);
       const shareUrl = `${window.location.origin}${window.location.pathname}#s=${encoded}`;
 
       if (!navigator.clipboard) {

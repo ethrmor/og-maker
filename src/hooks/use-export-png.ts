@@ -7,6 +7,8 @@ interface UseExportPngOptions {
   onExportStart?: () => void;
   onExportEnd?: () => void;
   brandName?: string;
+  canvasWidth: number;
+  canvasHeight: number;
 }
 
 export function useExportPng({
@@ -14,6 +16,8 @@ export function useExportPng({
   onExportStart,
   onExportEnd,
   brandName,
+  canvasWidth,
+  canvasHeight,
 }: UseExportPngOptions) {
   const { showToast } = useToast();
 
@@ -25,7 +29,7 @@ export function useExportPng({
 
       try {
         onExportStart?.();
-        const dataUrl = await exportToPng(el);
+        const dataUrl = await exportToPng(el, canvasWidth, canvasHeight);
         downloadDataUrl(dataUrl, finalFilename);
         showToast("Image downloaded successfully", "success");
       } catch (error) {
@@ -35,7 +39,7 @@ export function useExportPng({
         onExportEnd?.();
       }
     },
-    [canvasRef, onExportStart, onExportEnd, showToast, brandName]
+    [canvasRef, onExportStart, onExportEnd, showToast, brandName, canvasWidth, canvasHeight]
   );
 
   const copyToClipboard = useCallback(async () => {
@@ -44,7 +48,7 @@ export function useExportPng({
 
     try {
       onExportStart?.();
-      const dataUrl = await exportToPng(el);
+      const dataUrl = await exportToPng(el, canvasWidth, canvasHeight);
       await copyImageToClipboard(dataUrl);
       showToast("Copied to clipboard", "success");
     } catch (error) {
@@ -53,7 +57,7 @@ export function useExportPng({
     } finally {
       onExportEnd?.();
     }
-  }, [canvasRef, onExportStart, onExportEnd, showToast]);
+  }, [canvasRef, onExportStart, onExportEnd, showToast, canvasWidth, canvasHeight]);
 
   return { download, copyToClipboard };
 }

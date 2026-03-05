@@ -2,6 +2,7 @@ import { useRef, useState, useEffect, useCallback, useImperativeHandle, forwardR
 import type { TemplateProps, TemplateFields } from "@/types/template";
 import { useExportPng } from "@/hooks/use-export-png";
 import { BatchExportButton } from "@/components/editor/batch-export-button";
+import { getPresetById } from "@/lib/platform-presets";
 
 interface PreviewCanvasProps {
   fields: TemplateFields;
@@ -9,6 +10,7 @@ interface PreviewCanvasProps {
   isExporting: boolean;
   onExportStart: () => void;
   onExportEnd: () => void;
+  platformPresetId: string;
 }
 
 export interface PreviewCanvasRef {
@@ -22,16 +24,23 @@ const PreviewCanvas = forwardRef<PreviewCanvasRef, PreviewCanvasProps>(function 
   isExporting,
   onExportStart,
   onExportEnd,
+  platformPresetId,
 }, ref) {
   const canvasRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(0.5);
+
+  const preset = getPresetById(platformPresetId);
+  const canvasWidth = preset.width;
+  const canvasHeight = preset.height;
 
   const { download, copyToClipboard } = useExportPng({
     canvasRef,
     onExportStart,
     onExportEnd,
     brandName: fields.brandName,
+    canvasWidth,
+    canvasHeight,
   });
 
   // Expose actions via ref for keyboard shortcuts
@@ -46,10 +55,10 @@ const PreviewCanvas = forwardRef<PreviewCanvasRef, PreviewCanvasProps>(function 
     const { width, height } = container.getBoundingClientRect();
     // Leave some padding around the preview
     const padding = 48;
-    const scaleX = (width - padding) / 1200;
-    const scaleY = (height - padding) / 630;
+    const scaleX = (width - padding) / canvasWidth;
+    const scaleY = (height - padding) / canvasHeight;
     setScale(Math.min(scaleX, scaleY, 1));
-  }, []);
+  }, [canvasWidth, canvasHeight]);
 
   useEffect(() => {
     updateScale();
@@ -75,8 +84,8 @@ const PreviewCanvas = forwardRef<PreviewCanvasRef, PreviewCanvasProps>(function 
         {/* Layout wrapper with scaled dimensions */}
         <div
           style={{
-            width: 1200 * scale,
-            height: 630 * scale,
+            width: canvasWidth * scale,
+            height: canvasHeight * scale,
             flexShrink: 0,
           }}
         >
@@ -85,13 +94,13 @@ const PreviewCanvas = forwardRef<PreviewCanvasRef, PreviewCanvasProps>(function 
             style={{
               transform: `scale(${scale})`,
               transformOrigin: "top left",
-              width: 1200,
-              height: 630,
+              width: canvasWidth,
+              height: canvasHeight,
             }}
           >
             <div
               ref={canvasRef}
-              style={{ width: 1200, height: 630 }}
+              style={{ width: canvasWidth, height: canvasHeight }}
               className="shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),0_10px_25px_-5px_rgba(0,0,0,0.08),0_25px_50px_-12px_rgba(0,0,0,0.15)]"
             >
               <TemplateComponent fields={fields} />
@@ -154,6 +163,7 @@ const PreviewCanvas = forwardRef<PreviewCanvasRef, PreviewCanvasProps>(function 
           disabled={isExporting}
           onExportStart={onExportStart}
           onExportEnd={onExportEnd}
+          platformPresetId={platformPresetId}
         />
       </div>
     </div>

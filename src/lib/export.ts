@@ -1,9 +1,9 @@
 import { domToPng } from "modern-screenshot";
 
-export async function exportToPng(element: HTMLElement): Promise<string> {
+export async function exportToPng(element: HTMLElement, width: number, height: number): Promise<string> {
   return domToPng(element, {
-    width: 1200,
-    height: 630,
+    width,
+    height,
     scale: 2, // 2x retina quality
     quality: 1.0,
   });

@@ -9,6 +9,7 @@ interface BatchExportButtonProps {
   disabled?: boolean;
   onExportStart?: () => void;
   onExportEnd?: () => void;
+  platformPresetId: string;
 }
 
 export function BatchExportButton({
@@ -16,10 +17,12 @@ export function BatchExportButton({
   disabled = false,
   onExportStart,
   onExportEnd,
+  platformPresetId,
 }: BatchExportButtonProps) {
   const { showToast } = useToast();
   const { exportAll, isExporting, progress } = useBatchExport({
     currentFields: fields,
+    platformPresetId,
   });
 
   const handleExportAll = async () => {

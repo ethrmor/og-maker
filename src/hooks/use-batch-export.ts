@@ -5,11 +5,13 @@ import { useToast } from "@/components/ui/toast";
 import { TEMPLATE_COMPONENTS } from "@/components/templates";
 import { exportToPng } from "@/lib/export";
 import { TEMPLATES } from "@/lib/templates";
+import { getPresetById } from "@/lib/platform-presets";
 import type { TemplateFields, TemplateProps } from "@/types/template";
 
 interface UseBatchExportOptions {
   currentFields: TemplateFields;
   onProgress?: (current: number, total: number) => void;
+  platformPresetId: string;
 }
 
 interface UseBatchExportResult {
@@ -115,10 +117,14 @@ function downloadBlob(blob: Blob, filename: string): void {
   URL.revokeObjectURL(url);
 }
 
-export function useBatchExport({ currentFields, onProgress }: UseBatchExportOptions): UseBatchExportResult {
+export function useBatchExport({ currentFields, onProgress, platformPresetId }: UseBatchExportOptions): UseBatchExportResult {
   const { showToast } = useToast();
   const [isExporting, setIsExporting] = useState(false);
   const [progress, setProgress] = useState({ current: 0, total: TOTAL_TEMPLATES });
+
+  const preset = getPresetById(platformPresetId);
+  const canvasWidth = preset.width;
+  const canvasHeight = preset.height;
 
   const exportAll = useCallback(async () => {
     if (isExporting) {
@@ -135,7 +141,7 @@ export function useBatchExport({ currentFields, onProgress }: UseBatchExportOpti
     onProgress?.(0, TOTAL_TEMPLATES);
 
     const container = document.createElement("div");
-    container.style.cssText = "position:fixed;left:-9999px;top:0;width:1200px;height:630px;pointer-events:none;opacity:0;";
+    container.style.cssText = `position:fixed;left:-9999px;top:0;width:${canvasWidth}px;height:${canvasHeight}px;pointer-events:none;opacity:0;`;
     document.body.appendChild(container);
 
     const root = createRoot(container);
@@ -164,7 +170,7 @@ export function useBatchExport({ currentFields, onProgress }: UseBatchExportOpti
             waitForImagesInContainer(container),
           ]);
 
-          const dataUrl = await exportToPng(container);
+          const dataUrl = await exportToPng(container, canvasWidth, canvasHeight);
           const pngBlob = await dataUrlToBlob(dataUrl);
           const pngFilename = `og-${brand}-${template.id}-${date}.png`;
           zip.file(pngFilename, pngBlob);
@@ -201,7 +207,7 @@ export function useBatchExport({ currentFields, onProgress }: UseBatchExportOpti
       document.body.removeChild(container);
       setIsExporting(false);
     }
-  }, [currentFields, isExporting, onProgress, showToast]);
+  }, [currentFields, isExporting, onProgress, showToast, canvasWidth, canvasHeight]);
 
   return { exportAll, isExporting, progress };
 }
