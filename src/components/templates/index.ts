@@ -18,6 +18,12 @@ import { HorizonTemplate } from "./horizon";
 import { KineticTemplate } from "./kinetic";
 import { PrismTemplate } from "./prism";
 import { NoirTemplate } from "./noir";
+import { GlitchTemplate } from "./glitch";
+import { RetroTemplate } from "./retro";
+import { PaperTemplate } from "./paper";
+import { FluidTemplate } from "./fluid";
+import { CodeTemplate } from "./code";
+import { MosaicTemplate } from "./mosaic";
 
 export const TEMPLATE_COMPONENTS: Record<string, ComponentType<TemplateProps>> = {
   minimal: MinimalTemplate,
@@ -38,4 +44,10 @@ export const TEMPLATE_COMPONENTS: Record<string, ComponentType<TemplateProps>> =
   kinetic: KineticTemplate,
   prism: PrismTemplate,
   noir: NoirTemplate,
+  glitch: GlitchTemplate,
+  retro: RetroTemplate,
+  paper: PaperTemplate,
+  fluid: FluidTemplate,
+  code: CodeTemplate,
+  mosaic: MosaicTemplate,
 };
