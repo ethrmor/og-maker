@@ -14,6 +14,23 @@ export interface TemplateFields {
   backgroundColor: string; // Hex
   gradientPreset: string; // Preset ID from gradients.ts
   backgroundImageUrl: string | null;
+
+  // Positioning (for builder template)
+  titleX: number;
+  titleY: number;
+  titleWidth: number;
+  titleRotation: number;
+  subtitleX: number;
+  subtitleY: number;
+  subtitleWidth: number;
+  subtitleRotation: number;
+  brandNameX: number;
+  brandNameY: number;
+  brandNameRotation: number;
+  logoX: number;
+  logoY: number;
+  logoWidth: number;
+  logoRotation: number;
 }
 
 export type EditorStep = "template" | "content" | "branding" | "visuals";
@@ -22,11 +39,15 @@ export type EditorStep = "template" | "content" | "branding" | "visuals";
 export interface FieldConfig {
   key: keyof TemplateFields;
   label: string;
-  type: "text" | "textarea" | "color" | "file" | "select" | "toggle";
+  type: "text" | "textarea" | "color" | "file" | "select" | "toggle" | "range";
   placeholder?: string;
   required?: boolean;
-  group: "content" | "branding";
+  group: "content" | "branding" | "positioning";
   options?: { value: string; label: string }[]; // For select type
+  min?: number; // For range type
+  max?: number; // For range type
+  step?: number; // For range type
+  templateId?: string; // Only show for specific template
 }
 
 // === Template metadata ===

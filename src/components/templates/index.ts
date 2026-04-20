@@ -6,7 +6,7 @@ import { SplitTemplate } from "./split";
 import { ElegantTemplate } from "./elegant";
 import { GeometricTemplate } from "./geometric";
 import { FrameTemplate } from "./frame";
-import { LayersTemplate } from "./layers";
+
 import { MonoTemplate } from "./mono";
 import { EditorialTemplate } from "./editorial";
 import { AuroraTemplate } from "./aurora";
@@ -24,6 +24,7 @@ import { PaperTemplate } from "./paper";
 import { FluidTemplate } from "./fluid";
 import { CodeTemplate } from "./code";
 import { MosaicTemplate } from "./mosaic";
+import { BuilderTemplate } from "./builder";
 
 export const TEMPLATE_COMPONENTS: Record<string, ComponentType<TemplateProps>> = {
   minimal: MinimalTemplate,
@@ -32,7 +33,7 @@ export const TEMPLATE_COMPONENTS: Record<string, ComponentType<TemplateProps>> =
   elegant: ElegantTemplate,
   geometric: GeometricTemplate,
   frame: FrameTemplate,
-  layers: LayersTemplate,
+
   mono: MonoTemplate,
   editorial: EditorialTemplate,
   aurora: AuroraTemplate,
@@ -50,4 +51,5 @@ export const TEMPLATE_COMPONENTS: Record<string, ComponentType<TemplateProps>> =
   fluid: FluidTemplate,
   code: CodeTemplate,
   mosaic: MosaicTemplate,
+  builder: BuilderTemplate,
 };

@@ -47,6 +47,8 @@ const STEP_CONFIG: Record<EditorStep, { label: string; description: string }> = 
   visuals: { label: "Visuals", description: "Background & finish" },
 };
 
+const POSITIONING_STEP = { label: "Position", description: "Move elements" } as const;
+
 function EditorSidebar({
   fields,
   selectedTemplateId,
@@ -62,6 +64,10 @@ function EditorSidebar({
 }: EditorSidebarProps) {
   const contentFields = EDITOR_FIELDS.filter((f) => f.group === "content");
   const brandingFields = EDITOR_FIELDS.filter((f) => f.group === "branding");
+  const positioningFields = EDITOR_FIELDS.filter(
+    (f) => f.group === "positioning" && (!f.templateId || f.templateId === selectedTemplateId)
+  );
+  const showPositioning = selectedTemplateId === "builder" && positioningFields.length > 0;
   const { showToast } = useToast();
 
   const handleFillSampleData = () => {
@@ -248,6 +254,31 @@ function EditorSidebar({
         </div>
 
         <Separator className="my-1" />
+
+        {showPositioning && (
+          <>
+            <div className={cn("transition-all duration-300", "opacity-100")}>
+              <SidebarSection
+                title={POSITIONING_STEP.label}
+                description={POSITIONING_STEP.description}
+                open={true}
+                onOpenChange={() => {}}
+              >
+                <div className="grid gap-3">
+                  {positioningFields.map((field) => (
+                    <FieldRenderer
+                      key={field.key}
+                      field={field}
+                      value={fields[field.key]}
+                      onChange={(val) => onUpdateField(field.key, val)}
+                    />
+                  ))}
+                </div>
+              </SidebarSection>
+            </div>
+            <Separator className="my-1" />
+          </>
+        )}
 
         <div
           className={cn(

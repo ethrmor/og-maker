@@ -12,6 +12,7 @@ import {
 import { ColorPicker } from "@/components/ui/color-picker";
 import { FileUpload } from "@/components/ui/file-upload";
 import { cn } from "@/lib/utils";
+import { Slider } from "@/components/ui/slider";
 
 // OG image character limits
 const CHARACTER_LIMITS: Partial<Record<keyof TemplateFields, { max: number; warning: number }>> = {
@@ -105,6 +106,34 @@ const FieldRenderer = React.forwardRef<HTMLDivElement, FieldRendererProps>(
               fit={isLogo ? "contain" : "cover"}
               maxPreviewHeight={isLogo ? 32 : 48}
             />
+          );
+        }
+
+        case "range": {
+          const numValue = (value as number) ?? field.min ?? 0;
+          const min = field.min ?? 0;
+          const max = field.max ?? 100;
+          const step = field.step ?? 1;
+
+          return (
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] text-muted-foreground">{min}</span>
+                <span className="text-[10px] font-medium tabular-nums">{numValue}</span>
+                <span className="text-[10px] text-muted-foreground">{max}</span>
+              </div>
+              <Slider
+                value={[numValue]}
+                onValueChange={(vals) => {
+                  const v = Array.isArray(vals) ? vals[0] : vals;
+                  onChange(v);
+                }}
+                min={min}
+                max={max}
+                step={step}
+                className="w-full"
+              />
+            </div>
           );
         }
 
