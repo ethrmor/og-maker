@@ -35,6 +35,13 @@ export interface TemplateFields {
   logoY: number;
   logoWidth: number;
   logoRotation: number;
+  // Background patterns (for builder template)
+  backgroundPattern: string; // "none" | "grid" | "dots" | "lines" | "noise" | "waves" | "hexagons"
+  backgroundPatternColor: string; // Hex color
+  backgroundPatternOpacity: number; // 0-100
+  backgroundPatternScale: number; // 0.5-3
+  backgroundMask: string; // "none" | "vignette" | "radial" | "linear" | "spotlight"
+  backgroundMaskIntensity: number; // 0-100
 }
 
 export type EditorStep = "template" | "content" | "branding" | "visuals";

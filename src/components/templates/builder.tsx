@@ -1,10 +1,9 @@
 import type { TemplateProps } from "@/types/template";
 import { TemplateWrapper } from "@/components/templates/template-wrapper";
-import { NOISE_PATTERN } from "@/lib/template-styles";
+import { NOISE_PATTERN, BACKGROUND_PATTERNS, BACKGROUND_MASKS } from "@/lib/template-styles";
 
 function BuilderTemplate({ fields }: TemplateProps) {
   // Convert percentage positions to actual coordinates
-  // Canvas is 1200x630
   const canvasWidth = 1200;
   const canvasHeight = 630;
 
@@ -23,8 +22,49 @@ function BuilderTemplate({ fields }: TemplateProps) {
   const logoTop = (fields.logoY / 100) * canvasHeight;
   const logoHeightPx = (fields.logoWidth / 100) * canvasHeight;
 
+  // Generate pattern and mask
+  const patternGenerator = fields.backgroundPattern && fields.backgroundPattern !== "none"
+    ? BACKGROUND_PATTERNS[fields.backgroundPattern as keyof typeof BACKGROUND_PATTERNS]
+    : null;
+  const patternCss = patternGenerator
+    ? patternGenerator(fields.backgroundPatternColor, fields.backgroundPatternOpacity, fields.backgroundPatternScale)
+    : null;
+
+  const maskGenerator = fields.backgroundMask && fields.backgroundMask !== "none"
+    ? BACKGROUND_MASKS[fields.backgroundMask as keyof typeof BACKGROUND_MASKS]
+    : null;
+  const maskCss = maskGenerator
+    ? maskGenerator(fields.backgroundMaskIntensity)
+    : null;
+
   return (
     <TemplateWrapper fields={fields}>
+      {/* Background pattern layer */}
+      {patternCss && (
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            backgroundImage: patternCss,
+            zIndex: 0,
+            pointerEvents: "none",
+          }}
+        />
+      )}
+
+      {/* Background mask layer */}
+      {maskCss && (
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background: maskCss,
+            zIndex: 1,
+            pointerEvents: "none",
+          }}
+        />
+      )}
+
       {/* Subtle noise texture overlay */}
       <div
         style={{
@@ -32,7 +72,7 @@ function BuilderTemplate({ fields }: TemplateProps) {
           inset: 0,
           backgroundImage: NOISE_PATTERN,
           opacity: 0.03,
-          zIndex: 1,
+          zIndex: 2,
           pointerEvents: "none",
         }}
       />
@@ -42,7 +82,7 @@ function BuilderTemplate({ fields }: TemplateProps) {
         style={{
           position: "absolute",
           inset: 0,
-          zIndex: 2,
+          zIndex: 10,
         }}
       >
         {/* Logo element */}
