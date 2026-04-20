@@ -20,6 +20,8 @@ import { generateSampleContent } from "@/lib/sample-content";
 import { useToast } from "@/components/ui/toast";
 import { PLATFORM_PRESETS, getPresetById } from "@/lib/platform-presets";
 import { cn } from "@/lib/utils";
+import { useState } from "react";
+import { Slider } from "@/components/ui/slider";
 
 interface EditorSidebarProps {
   fields: TemplateFields;
@@ -68,6 +70,7 @@ function EditorSidebar({
     (f) => f.group === "positioning" && (!f.templateId || f.templateId === selectedTemplateId)
   );
   const showPositioning = selectedTemplateId === "builder" && positioningFields.length > 0;
+  const [isPositioningOpen, setIsPositioningOpen] = useState(true);
   const { showToast } = useToast();
 
   const handleFillSampleData = () => {
@@ -257,12 +260,12 @@ function EditorSidebar({
 
         {showPositioning && (
           <>
-            <div className={cn("transition-all duration-300", "opacity-100")}>
+            <div className={cn("transition-all duration-300", isPositioningOpen ? "opacity-100" : "opacity-70")}>
               <SidebarSection
                 title={POSITIONING_STEP.label}
                 description={POSITIONING_STEP.description}
-                open={true}
-                onOpenChange={() => {}}
+                open={isPositioningOpen}
+                onOpenChange={(open) => setIsPositioningOpen(open)}
               >
                 <div className="grid gap-3">
                   {positioningFields.map((field) => (
@@ -324,12 +327,48 @@ function EditorSidebar({
               )}
 
               {fields.backgroundType === "gradient" && (
-                <div className="space-y-1.5">
-                  <Label className="text-xs">Preset</Label>
-                  <GradientPresetPicker
-                    value={fields.gradientPreset}
-                    onChange={(preset) => onUpdateField("gradientPreset", preset)}
-                  />
+                <div className="space-y-3">
+                  <div className="space-y-1.5">
+                    <Label className="text-xs">Preset</Label>
+                    <GradientPresetPicker
+                      value={fields.gradientPreset}
+                      onChange={(preset) => onUpdateField("gradientPreset", preset)}
+                      customPreview={`linear-gradient(${fields.customGradientAngle}deg, ${fields.customGradientFrom} 0%, ${fields.customGradientTo} 100%)`}
+                    />
+                  </div>
+
+                  {fields.gradientPreset === "custom" && (
+                    <div className="space-y-3 pt-2 border-t border-border/50">
+                      <div className="space-y-1.5">
+                        <Label className="text-xs">From Color</Label>
+                        <ColorPicker
+                          value={fields.customGradientFrom}
+                          onChange={(color) => onUpdateField("customGradientFrom", color)}
+                        />
+                      </div>
+                      <div className="space-y-1.5">
+                        <Label className="text-xs">To Color</Label>
+                        <ColorPicker
+                          value={fields.customGradientTo}
+                          onChange={(color) => onUpdateField("customGradientTo", color)}
+                        />
+                      </div>
+                      <div className="space-y-1.5">
+                        <Label className="text-xs">Angle ({fields.customGradientAngle}°)</Label>
+                        <Slider
+                          value={[fields.customGradientAngle]}
+                          onValueChange={(vals) => {
+                            const v = Array.isArray(vals) ? vals[0] : vals;
+                            onUpdateField("customGradientAngle", v);
+                          }}
+                          min={0}
+                          max={360}
+                          step={5}
+                          className="w-full"
+                        />
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
 

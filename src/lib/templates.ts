@@ -536,4 +536,8 @@ export const DEFAULT_FIELDS: TemplateFields = {
   logoY: 15,
   logoWidth: 15,
   logoRotation: 0,
+  // Custom gradient defaults
+  customGradientFrom: "#6366f1",
+  customGradientTo: "#a855f7",
+  customGradientAngle: 135,
 };

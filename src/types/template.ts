@@ -12,8 +12,12 @@ export interface TemplateFields {
   // Background
   backgroundType: "solid" | "gradient" | "image";
   backgroundColor: string; // Hex
-  gradientPreset: string; // Preset ID from gradients.ts
+  gradientPreset: string; // Preset ID from gradients.ts or "custom"
   backgroundImageUrl: string | null;
+  // Custom gradient
+  customGradientFrom: string; // Hex color
+  customGradientTo: string; // Hex color
+  customGradientAngle: number; // 0-360 degrees
 
   // Positioning (for builder template)
   titleX: number;

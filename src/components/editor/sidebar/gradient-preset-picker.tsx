@@ -1,15 +1,19 @@
 import * as React from "react";
 import { GRADIENT_PRESETS } from "@/lib/gradients";
 import { cn } from "@/lib/utils";
+import { Wand2 } from "lucide-react";
 
 interface GradientPresetPickerProps {
   value: string;
   onChange: (presetId: string) => void;
   columns?: number;
+  customPreview?: string;
 }
 
 const GradientPresetPicker = React.forwardRef<HTMLDivElement, GradientPresetPickerProps>(
-  ({ value, onChange, columns = 4 }, ref) => {
+  ({ value, onChange, columns = 4, customPreview }, ref) => {
+    const isCustomSelected = value === "custom";
+
     return (
       <div
         ref={ref}
@@ -39,6 +43,24 @@ const GradientPresetPicker = React.forwardRef<HTMLDivElement, GradientPresetPick
             </button>
           );
         })}
+        {/* Custom gradient option */}
+        <button
+          type="button"
+          role="radio"
+          aria-checked={isCustomSelected}
+          onClick={() => onChange("custom")}
+          title="Custom gradient"
+          className={cn(
+            "aspect-square rounded-md ring-1 transition-all focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50 flex items-center justify-center",
+            isCustomSelected
+              ? "ring-primary ring-offset-1 ring-offset-background"
+              : "ring-border hover:ring-primary/50 bg-muted"
+          )}
+          style={isCustomSelected && customPreview ? { background: customPreview } : undefined}
+        >
+          <Wand2 className="size-4 text-muted-foreground" />
+          <span className="sr-only">Custom gradient</span>
+        </button>
       </div>
     );
   }

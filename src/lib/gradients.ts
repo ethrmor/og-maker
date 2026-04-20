@@ -67,7 +67,10 @@ export const GRADIENT_PRESETS: GradientPreset[] = [
   },
 ];
 
-export function getGradientCss(presetId: string): string {
+export function getGradientCss(presetId: string, customFrom?: string, customTo?: string, customAngle?: number): string {
+  if (presetId === "custom" && customFrom && customTo && customAngle !== undefined) {
+    return `linear-gradient(${customAngle}deg, ${customFrom} 0%, ${customTo} 100%)`;
+  }
   const preset = GRADIENT_PRESETS.find((p) => p.id === presetId);
   return preset?.css ?? GRADIENT_PRESETS[0].css;
 }

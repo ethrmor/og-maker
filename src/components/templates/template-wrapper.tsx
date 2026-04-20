@@ -9,7 +9,7 @@ interface TemplateWrapperProps {
 function getBackgroundStyle(fields: TemplateFields): React.CSSProperties {
   switch (fields.backgroundType) {
     case "gradient":
-      return { background: getGradientCss(fields.gradientPreset) };
+      return { background: getGradientCss(fields.gradientPreset, fields.customGradientFrom, fields.customGradientTo, fields.customGradientAngle) };
     case "image":
       return fields.backgroundImageUrl
         ? {
