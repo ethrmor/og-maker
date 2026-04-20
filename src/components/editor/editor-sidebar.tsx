@@ -54,7 +54,6 @@ const POSITIONING_STEP = { label: "Position", description: "Move elements" } as 
 function EditorSidebar({
   fields,
   selectedTemplateId,
-  currentStep,
   onSelectTemplate,
   onUpdateField,
   onResetStyle,
@@ -62,7 +61,6 @@ function EditorSidebar({
   onPatchFields,
   platformPresetId = "og",
   onSetPlatformPreset,
-  onSetStep,
 }: EditorSidebarProps) {
   const contentFields = EDITOR_FIELDS.filter((f) => f.group === "content");
   const brandingFields = EDITOR_FIELDS.filter((f) => f.group === "branding");
@@ -70,21 +68,19 @@ function EditorSidebar({
     (f) => f.group === "positioning" && (!f.templateId || f.templateId === selectedTemplateId)
   );
   const showPositioning = selectedTemplateId === "builder" && positioningFields.length > 0;
+
+  // Independent accordion states
+  const [isContentOpen, setIsContentOpen] = useState(true);
+  const [isBrandingOpen, setIsBrandingOpen] = useState(true);
   const [isPositioningOpen, setIsPositioningOpen] = useState(true);
+  const [isVisualsOpen, setIsVisualsOpen] = useState(true);
+
   const { showToast } = useToast();
 
   const handleFillSampleData = () => {
     const sampleContent = generateSampleContent();
     onPatchFields?.(sampleContent);
     showToast("Filled with sample content", "success");
-  };
-
-  const isStepActive = (step: EditorStep) => currentStep === step;
-  const isStepCompleted = (step: EditorStep) => {
-    const allSteps: EditorStep[] = ["template", "content", "branding", "visuals"];
-    const stepIndex = allSteps.indexOf(step);
-    const currentIndex = allSteps.indexOf(currentStep);
-    return stepIndex < currentIndex;
   };
 
   return (
@@ -108,7 +104,6 @@ function EditorSidebar({
                   type="button"
                   onClick={() => {
                     onSelectTemplate(template.id);
-                    onSetStep("content");
                   }}
                   className={cn(
                     "group relative flex items-center justify-center rounded-md border-2 p-0.5 transition-all duration-150 cursor-pointer",
@@ -185,22 +180,14 @@ function EditorSidebar({
           </div>
         </div>
 
-        <div
-          className={cn(
-            "transition-all duration-300",
-            isStepActive("content") ? "opacity-100" : isStepCompleted("content") ? "opacity-70" : "opacity-40"
-          )}
-        >
+        <div className="transition-all duration-300">
           <SidebarSection
             title={STEP_CONFIG.content.label}
             description={STEP_CONFIG.content.description}
-            open={isStepActive("content")}
-            onOpenChange={(open) => {
-              if (open) onSetStep("content");
-            }}
-            className={cn(!isStepActive("content") && "cursor-pointer")}
+            open={isContentOpen}
+            onOpenChange={(open) => setIsContentOpen(open)}
             action={
-              isStepActive("content") ? (
+              isContentOpen ? (
                 <Button
                   variant="ghost"
                   size="xs"
@@ -228,20 +215,12 @@ function EditorSidebar({
 
         <Separator className="my-1" />
 
-        <div
-          className={cn(
-            "transition-all duration-300",
-            isStepActive("branding") ? "opacity-100" : isStepCompleted("branding") ? "opacity-70" : "opacity-40"
-          )}
-        >
+        <div className="transition-all duration-300">
           <SidebarSection
             title={STEP_CONFIG.branding.label}
             description={STEP_CONFIG.branding.description}
-            open={isStepActive("branding")}
-            onOpenChange={(open) => {
-              if (open) onSetStep("branding");
-            }}
-            className={cn(!isStepActive("branding") && "cursor-pointer")}
+            open={isBrandingOpen}
+            onOpenChange={(open) => setIsBrandingOpen(open)}
           >
             <div className="grid gap-4">
               {brandingFields.map((field) => (
@@ -260,7 +239,7 @@ function EditorSidebar({
 
         {showPositioning && (
           <>
-            <div className={cn("transition-all duration-300", isPositioningOpen ? "opacity-100" : "opacity-70")}>
+            <div className="transition-all duration-300">
               <SidebarSection
                 title={POSITIONING_STEP.label}
                 description={POSITIONING_STEP.description}
@@ -283,20 +262,12 @@ function EditorSidebar({
           </>
         )}
 
-        <div
-          className={cn(
-            "transition-all duration-300",
-            isStepActive("visuals") ? "opacity-100" : isStepCompleted("visuals") ? "opacity-70" : "opacity-40"
-          )}
-        >
+        <div className="transition-all duration-300">
           <SidebarSection
             title={STEP_CONFIG.visuals.label}
             description={STEP_CONFIG.visuals.description}
-            open={isStepActive("visuals")}
-            onOpenChange={(open) => {
-              if (open) onSetStep("visuals");
-            }}
-            className={cn(!isStepActive("visuals") && "cursor-pointer")}
+            open={isVisualsOpen}
+            onOpenChange={(open) => setIsVisualsOpen(open)}
           >
             <div className="grid gap-4">
               <div className="space-y-1.5">
